@@ -2,220 +2,112 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Ultimate Pack Simulator</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>First Generation RCY Pack Opener</title>
 <style>
-body {
-  font-family: Arial;
-  background: radial-gradient(circle, #020617, #0f172a);
-  color: white;
-  text-align: center;
-}
-
-button {
-  padding: 10px 20px;
-  margin: 10px;
-  background: #6366f1;
-  border: none;
-  border-radius: 8px;
-  color: white;
-  cursor: pointer;
-}
-
-select {
-  padding: 8px;
-}
-
-#results {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.pack {
-  margin: 15px;
-  padding: 10px;
-  border: 2px solid #334155;
-  border-radius: 10px;
-  width: 220px;
-}
-
-.card {
-  padding: 12px;
-  margin: 6px;
-  border-radius: 8px;
-  opacity: 0;
-  transform: scale(0.8);
-}
-
-.UR { background: gold; color: black; box-shadow: 0 0 20px gold; }
-.SR { background: violet; box-shadow: 0 0 15px violet; }
-.R  { background: deepskyblue; }
-.C  { background: gray; }
-
-.reveal {
-  animation: revealAnim 0.5s forwards;
-}
-
-@keyframes revealAnim {
-  to {
-    opacity: 1;
-    transform: scale(1);
+  body {
+    font-family: Arial, sans-serif;
+    background: #0a0a0a;
+    color: #fff;
+    text-align: center;
+    margin: 0;
+    padding: 0;
   }
-}
 
-.ur-explosion {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  width: 200px;
-  height: 200px;
-  background: radial-gradient(circle, gold, transparent);
-  transform: translate(-50%, -50%);
-  animation: explode 0.8s ease-out;
-  pointer-events: none;
-}
+  h1 {
+    margin-top: 20px;
+    color: #ffcc00;
+  }
 
-@keyframes explode {
-  from { transform: translate(-50%, -50%) scale(0.5); opacity: 1; }
-  to { transform: translate(-50%, -50%) scale(2); opacity: 0; }
-}
+  /* RCY Box */
+  #rcy-box {
+    margin: 50px auto;
+    width: 150px;
+    height: 150px;
+    background: black;
+    border: 3px solid #ff0000;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 48px;
+    cursor: pointer;
+    transition: transform 0.5s;
+  }
 
-.pack-opening {
-  width: 160px;
-  height: 220px;
-  margin: 20px auto;
-  background: linear-gradient(45deg, #6366f1, #9333ea);
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  animation: shake 0.4s infinite;
-}
+  #rcy-box:hover {
+    transform: rotateY(360deg);
+  }
 
-@keyframes shake {
-  0% { transform: rotate(0deg); }
-  50% { transform: rotate(3deg); }
-  100% { transform: rotate(-3deg); }
-}
+  /* Pack */
+  #pack {
+    display: none;
+    margin: 20px auto;
+    width: 100px;
+    height: 150px;
+    background: black;
+    color: #fff;
+    font-size: 48px;
+    border: 2px solid #fff;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 
-#collection {
-  margin-top: 30px;
-}
+  /* Card display */
+  #card-display img {
+    max-width: 200px;
+    margin: 10px;
+    border: 2px solid #fff;
+    border-radius: 5px;
+  }
+
+  button {
+    margin: 5px;
+    padding: 10px 15px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+
+  #celebration {
+    display: none;
+    color: #00ff00;
+    font-size: 24px;
+    margin: 10px;
+  }
 </style>
 </head>
-
 <body>
 
-<h1>🔥 Ultimate Pack Simulator</h1>
+<h1>First Generation RCY</h1>
 
-<select id="packCount">
-  <option value="1">1 Pack</option>
-  <option value="5">5 Packs</option>
-  <option value="10">10 Packs</option>
-  <option value="15">15 Packs</option>
-  <option value="20">20 Packs</option>
-  <option value="25">25 Packs</option>
-</select>
+<div id="rcy-box">RCY</div>
 
-<button onclick="openPacks()">Open Packs</button>
-<button onclick="showCollection()">View Collection</button>
+<div id="pack">1</div>
 
-<div id="animation"></div>
-<div id="results"></div>
-<div id="collection"></div>
+<p>Tokens: <span id="tokens">0</span></p>
+
+<div>
+  <button onclick="openPack(1)">Open 1 Pack (10 Tokens)</button>
+  <button onclick="openPack(5)">Open 5 Packs (20 Tokens)</button>
+  <button onclick="openPack(10)">Open 10 Packs (50 Tokens)</button>
+  <button onclick="openPack(20)">Open 20 Packs (100 Tokens)</button>
+  <button onclick="openPack(30)">Open 30 Packs (200 Tokens)</button>
+</div>
+
+<div id="celebration">🎉 You got a card! 🎉</div>
+
+<div id="card-display"></div>
 
 <script>
-const cards = [
-  { name: "Flame Dragon", rarity: "UR" },
-  { name: "Void Emperor", rarity: "UR" },
-  { name: "Shadow Mage", rarity: "SR" },
-  { name: "Thunder Beast", rarity: "SR" },
-  { name: "Forest Elf", rarity: "R" },
-  { name: "Water Spirit", rarity: "R" },
-  { name: "Stone Golem", rarity: "C" },
-  { name: "Tiny Slime", rarity: "C" }
-];
-
-const rates = { UR: 0.02, SR: 0.08, R: 0.30, C: 0.60 };
-
-function saveCard(card) {
-  let collection = JSON.parse(localStorage.getItem("collection")) || {};
-  collection[card.name] = (collection[card.name] || 0) + 1;
-  localStorage.setItem("collection", JSON.stringify(collection));
-}
-
-function showCollection() {
-  const data = JSON.parse(localStorage.getItem("collection")) || {};
-  const div = document.getElementById("collection");
-  div.innerHTML = "<h2>Your Collection</h2>";
-  for (let card in data) {
-    div.innerHTML += `<p>${card} x${data[card]}</p>`; // FIXED HERE
-  }
-}
-
-function getRarity(pity) {
-  if (pity >= 9) return "SR";
-  let rand = Math.random();
-  if (rand < rates.UR) return "UR";
-  if (rand < rates.UR + rates.SR) return "SR";
-  if (rand < rates.UR + rates.SR + rates.R) return "R";
-  return "C";
-}
-
-function getCard(rarity) {
-  const pool = cards.filter(c => c.rarity === rarity);
-  return pool[Math.floor(Math.random() * pool.length)];
-}
-
-function triggerUR() {
-  const fx = document.createElement("div");
-  fx.className = "ur-explosion";
-  document.body.appendChild(fx);
-  setTimeout(() => fx.remove(), 800);
-}
-
-async function openPacks() {
-  const count = parseInt(document.getElementById("packCount").value);
-  const results = document.getElementById("results");
-  const anim = document.getElementById("animation");
-
-  results.innerHTML = "";
-  anim.innerHTML = `<div class="pack-opening">Opening...</div>`;
-
-  await new Promise(r => setTimeout(r, 1000));
-  anim.innerHTML = "";
-
-  let pity = 0;
-
-  for (let i = 0; i < count; i++) {
-    const packDiv = document.createElement("div");
-    packDiv.className = "pack";
-    packDiv.innerHTML = `<h3>Pack ${i+1}</h3>`;
-    results.appendChild(packDiv);
-
-    for (let j = 0; j < 5; j++) {
-      await new Promise(r => setTimeout(r, 150));
-
-      const rarity = getRarity(pity);
-      if (rarity === "SR" || rarity === "UR") pity = 0;
-      else pity++;
-
-      const card = getCard(rarity);
-      saveCard(card);
-
-      const el = document.createElement("div");
-      el.className = `card ${rarity}`;
-      el.innerText = `${card.name} (${rarity})`;
-
-      packDiv.appendChild(el);
-      setTimeout(() => el.classList.add("reveal"), 50);
-
-      if (rarity === "UR") triggerUR();
-    }
-  }
-}
-</script>
-
-</body>
-</html>
+  // Card pool example
+  const cardPool = [
+    {
+      name: "Byteblade Initiate",
+      type: "Monster",
+      imageUrl: "", // add your image link here
+    },
+    {
+      name: "Byteblade System Dragbit",
+     
