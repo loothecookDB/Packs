@@ -50,7 +50,6 @@
     font-size: 48px;
     border: 2px solid #fff;
     border-radius: 5px;
-    display: flex;
     align-items: center;
     justify-content: center;
   }
@@ -110,4 +109,54 @@
     },
     {
       name: "Byteblade System Dragbit",
-     
+      type: "Monster",
+      imageUrl: "", // add your image link here
+    }
+  ];
+
+  let tokens = 0;
+
+  function openPack(count) {
+    const costPerPack = {
+      1: 10,
+      5: 20,
+      10: 50,
+      20: 100,
+      30: 200
+    };
+
+    const cost = costPerPack[count];
+    if (cost === undefined) {
+      alert("Invalid pack count");
+      return;
+    }
+
+    tokens += cost;
+    document.getElementById("tokens").textContent = tokens;
+
+    for (let i = 0; i < count; i++) {
+      displayCard();
+    }
+  }
+
+  function displayCard() {
+    const card = cardPool[Math.floor(Math.random() * cardPool.length)];
+    const cardDisplay = document.getElementById("card-display");
+
+    const cardDiv = document.createElement("div");
+    cardDiv.style.display = "inline-block";
+    cardDiv.style.margin = "10px";
+    cardDiv.innerHTML = `<strong>${card.name}</strong><br>${card.type}`;
+
+    cardDisplay.appendChild(cardDiv);
+
+    // Show celebration message
+    const celebration = document.getElementById("celebration");
+    celebration.style.display = "block";
+    setTimeout(() => {
+      celebration.style.display = "none";
+    }, 2000);
+  }
+</script>
+</body>
+</html>
