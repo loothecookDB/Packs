@@ -8,26 +8,59 @@
   body {
     margin: 0;
     padding: 0;
-    background: #0a0a0a url('https://i.imgur.com/yrB1HQL.png') no-repeat center center fixed;
-    background-size: cover;
     font-family: 'Orbitron', sans-serif;
     color: #fff;
-    text-align: center;
-    overflow-x: hidden;
+    background: url('https://cdn.discordapp.com/attachments/1398179743496536168/1483585527700652032/IMG_4088.jpeg?ex=69bb2031&is=69b9ceb1&hm=a8733bdc401869b2be45f4de58dc8b7dd8050e2645ab8cf99f9db05de596f451') center/cover no-repeat fixed;
+    display: flex;
   }
-
-  h1 {
-    margin-top: 20px;
-    font-size: 3em;
+  /* Sidebar */
+  #sidebar {
+    width: 180px;
+    background: rgba(0,0,0,0.85);
+    border-right: 2px solid #ff0000;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+    box-shadow: 2px 0 20px #ff0000 inset;
+  }
+  #sidebar h2 {
     color: #ff0000;
-    text-shadow: 0 0 20px #ff0000, 0 0 40px #ff5555;
+    text-shadow: 0 0 10px #ff0000;
+    font-size: 1.5em;
+    margin-bottom: 30px;
   }
-
-  /* === RCY Pack Box === */
+  .sidebar-btn {
+    width: 140px;
+    margin: 10px 0;
+    padding: 10px;
+    background: #111;
+    border: 2px solid #ff0000;
+    border-radius: 10px;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    text-align: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .sidebar-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px #ff0000, 0 0 40px #ff5555 inset;
+  }
+  /* Main content */
+  #main-content {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+  }
+  .section { display: none; }
+  .active { display: block; }
+  /* Pack opener */
   #rcy-box {
     width: 100px;
     height: 160px;
-    margin: 50px auto;
+    margin: 30px auto;
     background: url('https://i.imgur.com/Zm6b8fF.png') center/cover no-repeat;
     border-radius: 15px;
     border: 3px solid #ff0000;
@@ -43,7 +76,6 @@
     overflow: hidden;
     transition: transform 0.6s ease, box-shadow 0.3s ease;
   }
-
   #rcy-box::before {
     content: "1";
     position: absolute;
@@ -53,100 +85,15 @@
     color: #fff;
     text-shadow: 0 0 5px #ff0000;
   }
-
-  #rcy-box::after {
-    content: "";
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: linear-gradient(120deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 60%);
-    transform: rotate(25deg);
-    transition: all 0.5s ease;
-  }
-
   #rcy-box:hover::after {
     transform: translateX(100%) rotate(25deg);
   }
-
   #rcy-box:hover {
     transform: rotateY(360deg) scale(1.1) rotateZ(5deg);
     box-shadow: 0 0 60px #ff0000 inset, 0 0 120px #ff7777;
   }
-
-  #rcy-box.reset {
-    transform: none;
-  }
-
-  /* === Packs === */
-  .pack {
-    width: 120px;
-    height: 160px;
-    margin: 10px;
-    border-radius: 10px;
-    border: 3px solid #ff0000;
-    background: linear-gradient(145deg, #111 0%, #222 100%);
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 48px;
-    color: #fff;
-    box-shadow: 0 0 20px #ff0000, 0 0 40px #ff5555 inset;
-    cursor: pointer;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
-  .pack:hover {
-    transform: scale(1.1) rotateZ(10deg);
-    box-shadow: 0 0 40px #ff0000, 0 0 80px #ff7777 inset;
-  }
-
-  /* === Card Display === */
-  #card-display {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin-top: 20px;
-    perspective: 1000px;
-  }
-  .card {
-    max-width: 150px;
-    margin: 10px;
-    border: 2px solid #fff;
-    border-radius: 10px;
-    transform: scale(0) rotateY(180deg);
-    opacity: 0;
-    animation: appear 0.6s forwards;
-    background: #222;
-    min-height: 150px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 12px;
-    color: #aaa;
-  }
-  @keyframes appear {
-    0% { transform: scale(0) rotateY(180deg); opacity: 0; }
-    60% { transform: scale(1.2) rotateY(0deg); opacity: 1; }
-    100% { transform: scale(1) rotateY(0deg); }
-  }
-
-  /* Celebration Text */
-  #celebration {
-    display: none;
-    font-size: 28px;
-    color: #00ff00;
-    text-shadow: 0 0 15px #00ff00, 0 0 30px #00ff00;
-    margin: 20px;
-    animation: flash 0.8s ease;
-  }
-  @keyframes flash {
-    0%,100%{opacity:0;}
-    50%{opacity:1;}
-  }
-
   /* Buttons */
-  button {
+  button.open-btn {
     margin: 5px;
     padding: 12px 18px;
     font-size: 16px;
@@ -157,91 +104,155 @@
     color: #fff;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
   }
-  button:hover {
+  button.open-btn:hover {
     transform: scale(1.05);
     box-shadow: 0 0 20px #ff0000, 0 0 40px #ff5555 inset;
   }
-
-  /* Particle Sparks for Pack Opening */
-  .spark {
-    position: absolute;
-    width: 6px;
-    height: 6px;
-    background: #ff0000;
-    border-radius: 50%;
-    pointer-events: none;
-    animation: sparkMove 0.8s forwards;
+  /* Card displays */
+  #recent-pack, #collection {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 900px;
+    margin-top: 20px;
   }
-  @keyframes sparkMove {
-    0% { opacity:1; transform: translate(0,0) scale(1); }
-    100% { opacity:0; transform: translate(var(--dx), var(--dy)) scale(0.5); }
+  .card {
+    width: 120px;
+    margin: 10px;
+    border: 2px solid #fff;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
   }
+  .card:hover { transform: scale(1.1); }
+  /* Modal */
+  #card-modal {
+    display: none;
+    position: fixed;
+    top:0; left:0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.95);
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+  }
+  #card-modal-content {
+    background: #111;
+    padding: 20px;
+    border: 2px solid #ff0000;
+    border-radius: 15px;
+    color: #fff;
+    max-width: 400px;
+    text-align: center;
+    position: relative;
+  }
+  #card-modal-content img { max-width: 200px; margin: 10px; }
+  #card-modal-content .close { position: absolute; top: 5px; right: 10px; cursor: pointer; font-size: 20px; }
 </style>
 </head>
 <body>
 
-<h1>First Generation RCY</h1>
-
-<div id="rcy-box">RCY</div>
-
-<p>Tokens: <span id="tokens">0</span></p>
-
-<div>
-  <button onclick="openPack(1)">Open 1 Pack (10 Tokens)</button>
-  <button onclick="openPack(5)">Open 5 Packs (20 Tokens)</button>
-  <button onclick="openPack(10)">Open 10 Packs (50 Tokens)</button>
-  <button onclick="openPack(20)">Open 20 Packs (100 Tokens)</button>
-  <button onclick="openPack(30)">Open 30 Packs (200 Tokens)</button>
+<div id="sidebar">
+  <h2>RCY Menu</h2>
+  <div class="sidebar-btn" onclick="showSection('pack-opener')">Pack Opener</div>
+  <div class="sidebar-btn" onclick="showSection('recent-pack-section')">Recent Pack</div>
+  <div class="sidebar-btn" onclick="showSection('collection-section')">Collection</div>
 </div>
 
-<div id="celebration">🎉 Pack Opened! 🎉</div>
+<div id="main-content">
+  <div id="pack-opener" class="section active">
+    <h1>First Generation RCY</h1>
+    <div id="rcy-box">RCY</div>
+    <p>Tokens: <span id="tokens">0</span></p>
+    <div>
+      <button class="open-btn" onclick="openPack(1)">Open 1 Pack (10 Tokens)</button>
+      <button class="open-btn" onclick="openPack(5)">Open 5 Packs (20 Tokens)</button>
+      <button class="open-btn" onclick="openPack(10)">Open 10 Packs (50 Tokens)</button>
+      <button class="open-btn" onclick="openPack(20)">Open 20 Packs (100 Tokens)</button>
+      <button class="open-btn" onclick="openPack(30)">Open 30 Packs (200 Tokens)</button>
+    </div>
+  </div>
 
-<div id="card-display"></div>
+  <div id="recent-pack-section" class="section">
+    <h2>Recently Opened Pack</h2>
+    <div id="recent-pack"></div>
+  </div>
+
+  <div id="collection-section" class="section">
+    <h2>Collection</h2>
+    <div id="collection"></div>
+  </div>
+</div>
+
+<div id="card-modal">
+  <div id="card-modal-content">
+    <span class="close" onclick="closeModal()">×</span>
+    <img id="modal-img" src="" alt="">
+    <h3 id="modal-name"></h3>
+    <p id="modal-type"></p>
+    <p id="modal-atkdef"></p>
+    <p id="modal-effect"></p>
+  </div>
+</div>
 
 <script>
-  // === Token System ===
+  // Navigation
+  function showSection(id) {
+    document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+  }
+
+  // Token System
   let tokens = parseInt(localStorage.getItem('tokens')) || 0;
   let lastLogin = localStorage.getItem('lastLogin');
   let today = new Date().toDateString();
-
   if(!localStorage.getItem('firstTime')) { tokens+=1000; localStorage.setItem('firstTime','done'); }
-  if(lastLogin!==today){ tokens+=10; localStorage.setItem('lastLogin',today);}
+  if(lastLogin!==today) { tokens+=10; localStorage.setItem('lastLogin',today);}
   document.getElementById('tokens').innerText=tokens;
   localStorage.setItem('tokens', tokens);
 
-  // === Card Pool ===
+  // Card Pool
   const cardPool = [
-    {name:"Byteblade Initiate", imageUrl:""},
-    {name:"Byteblade Slicer", imageUrl:""},
-    {name:"Byteblade Vanguard", imageUrl:""},
-    {name:"Byteblade Root Access Kernel", imageUrl:""},
-    {name:"Byteblade Crusader", imageUrl:""},
-    {name:"Byteblade Hacker", imageUrl:""},
-    {name:"Byteblade Encoder", imageUrl:""},
-    {name:"Byteblade Overclock", imageUrl:""},
-    {name:"Byteblade System Dragbit", imageUrl:"https://www.duelingbook.com/card?id=5619533"},
+    {name:"Byteblade Initiate", type:"Level 3 DARK Cyberse", atkdef:"ATK 1200 / DEF 800", effect:"If you control no monsters: Special Summon from hand. If sent to GY: add 1 'Byteblade' card from Deck. Once per turn.", imageUrl:""},
+    {name:"Byteblade Slicer", type:"Level 4 DARK Cyberse", atkdef:"ATK 1500 / DEF 1000", effect:"Special Summon if only Byteblade monsters. Normal/Special Summon: Special Summon 1 Byteblade from hand/GY. Once per turn.", imageUrl:""},
+    {name:"Byteblade Vanguard", type:"Level 2 DARK Cyberse", atkdef:"ATK 1000 / DEF 1000", effect:"Banish from GY: Add 1 Byteblade Spell from Deck. Once per turn.", imageUrl:""},
+    {name:"Byteblade Root Access Kernel", type:"Level 4 Tuner DARK Cyberse", atkdef:"ATK 1800 / DEF 0", effect:"Send 1 Cyberse from Deck to GY; Special Summon this from hand. Cannot Extra Deck Summon non-Byteblade Links this turn. Normal/Special Summon: Add 1 Byteblade from GY. Once per effect per turn.", imageUrl:""},
+    {name:"Byteblade Crusader", type:"Level 6 DARK Cyberse", atkdef:"ATK 2000 / DEF 1800", effect:"Quick Effect: Send 1 other Byteblade from hand/field to GY; Special Summon this from hand. Normal/Special Summon: Special Summon 1 Byteblade from Deck (except Crusader). Link material: can use hand monsters for Byteblade Link Summon this turn. Once per effect per turn.", imageUrl:""},
+    {name:"Redzone Byteblade Imposter", type:"Level 4 FIRE Machine", atkdef:"ATK 0 / DEF 2000", effect:"Normal/Special Summon: Add 1 Redzone/Ignition Spell or 1 Byteblade Monster. Sent to GY while controlling FIRE Machine/Cyberse: Special Summon it, negate effects. End Phase: Banish to destroy 1 opponent card. Once per effect per turn.", imageUrl:""},
+    {name:"Byteblade Hacker", type:"Link 2 DARK Cyberse", atkdef:"ATK 2000", effect:"2 Cyberse monsters. Link Summon: Special Summon 1 Byteblade Link from GY. Cyberse Special Summoned to this zone: Draw 1. Once per effect per turn.", imageUrl:""},
+    {name:"Byteblade Encoder", type:"Link 2 DARK Cyberse", atkdef:"ATK 2200", effect:"2 Cyberse including 1 Byteblade. Discard 1: Add 1 Byteblade from Deck. Main Phase: Special Summon 1 Byteblade from Deck to zone, negate effects. Cannot Extra Deck Summon non-Cyberse Links. Once per effect per turn.", imageUrl:""},
+    {name:"Byteblade Overclock", type:"Link 3 DARK Cyberse", atkdef:"ATK 2800", effect:"2+ Cyberse including 1 Byteblade Tuner. Link Summon: Special Summon 1 Byteblade from GY to zone, negate effects. Quick Effect: Opponent activates monster/Spell/Trap: send 1 Cyberse from hand/Deck to GY; negate and destroy. Once per effect per turn.", imageUrl:""},
+    {name:"Byteblade System Dragbit", type:"Link 4 DARK Cyberse", atkdef:"ATK 3000", effect:"3+ Cyberse including 1 Link-2 and 1 Effect. Link Summon: Special Summon up to 2 Byteblade from GY to zones. Control another Byteblade Link: opponent monsters summoned DEF & negated. Quick Effect: Destroy 1 Cyberse or banish 1 Byteblade GY to negate opponent Spell/Trap. End Phase: Destroy 1 monster this points to. Once per effect per turn.", imageUrl:"https://www.duelingbook.com/card?id=5619533"}
   ];
 
-  // === Placeholder SVG ===
-  const placeholderSVG = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='200'%3E%3Crect fill='%23222' width='150' height='200'/%3E%3Ctext x='50%25' y='50%25' fill='%23666' font-size='12' text-anchor='middle' dominant-baseline='middle'%3ECard Image%3C/text%3E%3C/svg%3E";
-
-  // === Particle Effect ===
-  function createSparks(x,y){
-    for(let i=0;i<20;i++){ 
-      const spark=document.createElement('div');
-      spark.className='spark';
-      const dx=(Math.random()-0.5)*200+'px';
-      const dy=(Math.random()-0.5)*200+'px';
-      spark.style.setProperty('--dx',dx);
-      spark.style.setProperty('--dy',dy);
-      spark.style.left=x+'px';
-      spark.style.top=y+'px';
-      document.body.appendChild(spark);
-      setTimeout(()=>spark.remove(),800);
-    }
+  function updateCollectionDisplay() {
+    const collectionDiv = document.getElementById('collection');
+    let collection = JSON.parse(localStorage.getItem('collection')) || [];
+    collectionDiv.innerHTML = "";
+    collection.forEach(name=>{
+      const card = cardPool.find(c=>c.name===name);
+      if(card){
+        const img = document.createElement('img');
+        img.src = card.imageUrl || "";
+        img.alt = card.name;
+        img.className='card';
+        img.onclick=()=>showModal(card);
+        collectionDiv.appendChild(img);
+      }
+    });
   }
 
-  // === Open Pack Function ===
+  function showModal(card){
+    document.getElementById('modal-img').src = card.imageUrl || "";
+    document.getElementById('modal-name').innerText = card.name;
+    document.getElementById('modal-type').innerText = card.type || "";
+    document.getElementById('modal-atkdef').innerText = card.atkdef || "";
+    document.getElementById('modal-effect').innerText = card.effect || "";
+    document.getElementById('card-modal').style.display = 'flex';
+  }
+  function closeModal(){ document.getElementById('card-modal').style.display='none'; }
+
   function openPack(packCount){
     let cost=0;
     if(packCount===1) cost=10;
@@ -249,49 +260,33 @@
     else if(packCount===10) cost=50;
     else if(packCount===20) cost=100;
     else if(packCount===30) cost=200;
-
     if(tokens<cost){alert("Not enough tokens!"); return;}
     tokens-=cost;
     localStorage.setItem('tokens',tokens);
     document.getElementById('tokens').innerText=tokens;
 
-    const display=document.getElementById('card-display');
-    display.innerHTML='';
+    const recentDiv = document.getElementById('recent-pack');
+    recentDiv.innerHTML="";
 
-    for(let i=0;i<5*packCount;i++){ 
-      const card=cardPool[Math.floor(Math.random()*cardPool.length)];
-      const img=document.createElement('img');
-      img.src=card.imageUrl||placeholderSVG;
-      img.alt=card.name;
+    for(let i=0;i<5*packCount;i++){
+      const card = cardPool[Math.floor(Math.random()*cardPool.length)];
+      const img = document.createElement('img');
+      img.src = card.imageUrl || "";
+      img.alt = card.name;
       img.className='card';
-      img.onerror = () => { img.src = placeholderSVG; };
-      display.appendChild(img);
+      img.onclick=()=>showModal(card);
+      recentDiv.appendChild(img);
 
-      let collection=JSON.parse(localStorage.getItem('collection'))||[];
-      if(collection.length<10000) {
-        collection.push(card.name);
-        localStorage.setItem('collection',JSON.stringify(collection));
-      }
+      let collection = JSON.parse(localStorage.getItem('collection')) || [];
+      collection.push(card.name);
+      localStorage.setItem('collection',JSON.stringify(collection));
     }
 
-    document.getElementById('celebration').style.display='block';
-    setTimeout(()=>{document.getElementById('celebration').style.display='none';},2000);
-
-    // Sparks at center of RCY box
-    const rect=document.getElementById('rcy-box').getBoundingClientRect();
-    createSparks(rect.left+rect.width/2,rect.top+rect.height/2);
+    updateCollectionDisplay();
+    showSection('recent-pack-section');
   }
 
-  // === RCY Box Click ===
-  document.getElementById('rcy-box').addEventListener('click',()=>{
-    const box = document.getElementById('rcy-box');
-    box.classList.remove('reset');
-    void box.offsetWidth;
-    box.style.transform='rotateY(360deg) scale(1.1) rotateZ(5deg)';
-    setTimeout(()=>{ 
-      box.classList.add('reset');
-    },600);
-  });
+  updateCollectionDisplay();
 </script>
 </body>
 </html>
