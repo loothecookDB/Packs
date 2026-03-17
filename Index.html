@@ -150,18 +150,17 @@ function showCollection() {
   const div = document.getElementById("collection");
   div.innerHTML = "<h2>Your Collection</h2>";
   for (let card in data) {
-    div.innerHTML += `<p>${card} x${data[card]}</p>`;
+    div.innerHTML += `<p>">${card} x${data[card]}</p>`;
   }
 }
 
 function getRarity(pity) {
   if (pity >= 9) return "SR";
   let rand = Math.random();
-  let sum = 0;
-  for (let r in rates) {
-    sum += rates[r];
-    if (rand <= sum) return r;
-  }
+  if (rand < rates.UR) return "UR";
+  if (rand < rates.UR + rates.SR) return "SR";
+  if (rand < rates.UR + rates.SR + rates.R) return "R";
+  return "C";
 }
 
 function getCard(rarity) {
