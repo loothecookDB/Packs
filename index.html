@@ -1,277 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>First Generation RCY Pack Opener</title>
-<style>
-  body {
-    margin: 0;
-    padding: 0;
-    background: #0a0a0a url('https://i.imgur.com/yrB1HQL.png') no-repeat center center fixed;
-    background-size: cover;
-    font-family: 'Orbitron', sans-serif;
-    color: #fff;
-    text-align: center;
-    overflow-x: hidden;
-  }
-
-  h1 {
-    margin-top: 20px;
-    font-size: 3em;
-    color: #ff0000;
-    text-shadow: 0 0 20px #ff0000, 0 0 40px #ff5555;
-  }
-
-  /* === RCY Pack Box === */
-  #rcy-box {
-    width: 100px;
-    height: 160px;
-    margin: 50px auto;
-    background: url('https://i.imgur.com/Zm6b8fF.png') center/cover no-repeat; /* texture overlay */
-    border-radius: 15px;
-    border: 3px solid #ff0000;
-    box-shadow: 0 0 40px #ff0000 inset, 0 0 80px #ff5555;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 32px;
-    font-weight: bold;
-    color: #fff;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-    transition: transform 0.6s ease, box-shadow 0.3s ease;
-  }
-
-  /* Number label in corner */
-  #rcy-box::before {
-    content: "1";
-    position: absolute;
-    top: 8px;
-    left: 8px;
-    font-size: 24px;
-    color: #fff;
-    text-shadow: 0 0 5px #ff0000;
-  }
-
-  /* Shimmer effect */
-  #rcy-box::after {
-    content: "";
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: linear-gradient(120deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 60%);
-    transform: rotate(25deg);
-    transition: all 0.5s ease;
-  }
-
-  #rcy-box:hover::after {
-    transform: translateX(100%) rotate(25deg);
-  }
-
-  #rcy-box:hover {
-    transform: rotateY(360deg) scale(1.1) rotateZ(5deg);
-    box-shadow: 0 0 60px #ff0000 inset, 0 0 120px #ff7777;
-  }
-
-  /* === Packs === */
-  .pack {
-    width: 120px;
-    height: 160px;
-    margin: 10px;
-    border-radius: 10px;
-    border: 3px solid #ff0000;
-    background: linear-gradient(145deg, #111 0%, #222 100%);
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 48px;
-    color: #fff;
-    box-shadow: 0 0 20px #ff0000, 0 0 40px #ff5555 inset;
-    cursor: pointer;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
-  .pack:hover {
-    transform: scale(1.1) rotateZ(10deg);
-    box-shadow: 0 0 40px #ff0000, 0 0 80px #ff7777 inset;
-  }
-
-  /* === Card Display === */
-  #card-display {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin-top: 20px;
-    perspective: 1000px;
-  }
-  .card {
-    max-width: 150px;
-    margin: 10px;
-    border: 2px solid #fff;
-    border-radius: 10px;
-    transform: scale(0) rotateY(180deg);
-    opacity: 0;
-    animation: appear 0.6s forwards;
-  }
-  @keyframes appear {
-    0% { transform: scale(0) rotateY(180deg); opacity: 0; }
-    60% { transform: scale(1.2) rotateY(0deg); opacity: 1; }
-    100% { transform: scale(1) rotateY(0deg); }
-  }
-
-  /* Celebration Text */
-  #celebration {
-    display: none;
-    font-size: 28px;
-    color: #00ff00;
-    text-shadow: 0 0 15px #00ff00, 0 0 30px #00ff00;
-    margin: 20px;
-    animation: flash 0.8s ease;
-  }
-  @keyframes flash {
-    0%,100%{opacity:0;}
-    50%{opacity:1;}
-  }
-
-  /* Buttons */
-  button {
-    margin: 5px;
-    padding: 12px 18px;
-    font-size: 16px;
-    cursor: pointer;
-    border: 2px solid #ff0000;
-    border-radius: 10px;
-    background: #111;
-    color: #fff;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-  }
-  button:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 20px #ff0000, 0 0 40px #ff5555 inset;
-  }
-
-  /* Particle Sparks for Pack Opening */
-  .spark {
-    position: absolute;
-    width: 6px;
-    height: 6px;
-    background: #ff0000;
-    border-radius: 50%;
-    pointer-events: none;
-    animation: sparkMove 0.8s forwards;
-  }
-  @keyframes sparkMove {
-    0% { opacity:1; transform: translate(0,0) scale(1); }
-    100% { opacity:0; transform: translate(var(--dx), var(--dy)) scale(0.5); }
-  }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-
-<h1>First Generation RCY</h1>
-
-<div id="rcy-box">RCY</div>
-
-<p>Tokens: <span id="tokens">0</span></p>
-
-<div>
-  <button onclick="openPack(1)">Open 1 Pack (10 Tokens)</button>
-  <button onclick="openPack(5)">Open 5 Packs (20 Tokens)</button>
-  <button onclick="openPack(10)">Open 10 Packs (50 Tokens)</button>
-  <button onclick="openPack(20)">Open 20 Packs (100 Tokens)</button>
-  <button onclick="openPack(30)">Open 30 Packs (200 Tokens)</button>
-</div>
-
-<div id="celebration">🎉 Pack Opened! 🎉</div>
-
-<div id="card-display"></div>
-
-<script>
-  // === Token System ===
-  let tokens = parseInt(localStorage.getItem('tokens')) || 0;
-  let lastLogin = localStorage.getItem('lastLogin');
-  let today = new Date().toDateString();
-
-  if(!localStorage.getItem('firstTime')) { tokens+=1000; localStorage.setItem('firstTime','done'); }
-  if(lastLogin!==today){ tokens+=10; localStorage.setItem('lastLogin',today);}
-  document.getElementById('tokens').innerText=tokens;
-  localStorage.setItem('tokens', tokens);
-
-  // === Card Pool ===
-  const cardPool = [
-    {name:"Byteblade Initiate", imageUrl:""},
-    {name:"Byteblade Slicer", imageUrl:""},
-    {name:"Byteblade Vanguard", imageUrl:""},
-    {name:"Byteblade Root Access Kernel", imageUrl:""},
-    {name:"Byteblade Crusader", imageUrl:""},
-    {name:"Byteblade Hacker", imageUrl:""},
-    {name:"Byteblade Encoder", imageUrl:""},
-    {name:"Byteblade Overclock", imageUrl:""},
-    {name:"Byteblade System Dragbit", imageUrl:"https://www.duelingbook.com/card?id=5619533"},
-  ];
-
-  // === Particle Effect ===
-  function createSparks(x,y){
-    for(let i=0;i<20;i++){
-      const spark=document.createElement('div');
-      spark.className='spark';
-      const dx=(Math.random()-0.5)*200+'px';
-      const dy=(Math.random()-0.5)*200+'px';
-      spark.style.setProperty('--dx',dx);
-      spark.style.setProperty('--dy',dy);
-      spark.style.left=x+'px';
-      spark.style.top=y+'px';
-      document.body.appendChild(spark);
-      setTimeout(()=>spark.remove(),800);
-    }
-  }
-
-  // === Open Pack Function ===
-  function openPack(packCount){
-    let cost=0;
-    if(packCount===1) cost=10;
-    else if(packCount===5) cost=20;
-    else if(packCount===10) cost=50;
-    else if(packCount===20) cost=100;
-    else if(packCount===30) cost=200;
-
-    if(tokens<cost){alert("Not enough tokens!"); return;}
-    tokens-=cost;
-    localStorage.setItem('tokens',tokens);
-    document.getElementById('tokens').innerText=tokens;
-
-    const display=document.getElementById('card-display');
-    display.innerHTML='';
-
-    for(let i=0;i<5*packCount;i++){
-      const card=cardPool[Math.floor(Math.random()*cardPool.length)];
-      const img=document.createElement('img');
-      img.src=card.imageUrl||"";
-      img.alt=card.name;
-      img.className='card';
-      display.appendChild(img);
-
-      let collection=JSON.parse(localStorage.getItem('collection'))||[];
-      collection.push(card.name);
-      localStorage.setItem('collection',JSON.stringify(collection));
-    }
-
-    document.getElementById('celebration').style.display='block';
-    setTimeout(()=>{document.getElementById('celebration').style.display='none';},2000);
-
-    // Sparks at center of RCY box
-    const rect=document.getElementById('rcy-box').getBoundingClientRect();
-    createSparks(rect.left+rect.width/2,rect.top+rect.height/2);
-  }
-
-  // === RCY Box Click ===
-  document.getElementById('rcy-box').addEventListener('click',()=>{
-    document.getElementById('rcy-box').style.transform='rotateY(360deg) scale(1.1) rotateZ(5deg)';
-    setTimeout(()=>{document.getElementById('rcy-box').style.transform='rotateY(0deg) scale(1) rotateZ(0deg)';},600);
-  });
-</script>
+    <div class="image-container">
+        <img src="{{imageUrl}}" alt="Image" onerror="this.onerror=null; this.src='placeholder.png';" loading="lazy">
+        <div class="rcy-box">
+            <!-- Content for RCY box -->
+        </div>
+    </div>
+    <div class="collections">
+        {{#if collections.length}}
+            {{#each collections}}
+                <div class="collection-item">
+                    {{this}}
+                </div>
+            {{/each}}
+        {{else}}
+            <p>No collections available.</p>
+        {{/if}}
+    </div>
+    <script src="scripts.js"></script>
 </body>
 </html>
