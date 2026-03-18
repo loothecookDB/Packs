@@ -2,406 +2,221 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>RCY Pack Opener &amp; Deck Builder</title>
+<title>Byteblade Pack Simulator</title>
+
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
 body {
-  margin:0; padding:0;
-  font-family: 'Orbitron', sans-serif;
-  color:#fff;
-  background: url('https://i.imgur.com/XV4y5Wy.jpeg') center/cover no-repeat fixed;
-  display:flex;
-}
-
-/* Sidebar */
-#sidebar {
-  width:200px;
-  background: rgba(0,0,0,0.85);
-  border-right:2px solid #ff0000;
-  padding:20px;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  height:100vh;
-  box-shadow:2px 0 20px #ff0000 inset;
-}
-#sidebar h2 {
-  color:#ff0000;
-  text-shadow:0 0 10px #ff0000;
-  font-size:1.6em;
-  margin-bottom:30px;
-}
-.sidebar-btn {
-  width:160px;
-  margin:10px 0;
-  padding:10px;
-  background:#111;
-  border:2px solid #ff0000;
-  border-radius:10px;
-  cursor:pointer;
+  margin:0;
+  font-family:Arial;
+  background: radial-gradient(circle,#020617,#0f172a);
+  color:white;
   text-align:center;
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-.sidebar-btn:hover {
-  transform: scale(1.05);
-  box-shadow:0 0 20px #ff0000,0 0 40px #ff5555 inset;
 }
 
-/* Main content */
-#main-content {flex:1; padding:20px; overflow-y:auto;}
-.section {display:none;} .active {display:block;}
-#tokens-display {text-align:center; margin:10px 0; padding:5px 10px; border:2px solid #ff0000;
-                 border-radius:10px; background:rgba(0,0,0,0.7);}
-#box-cover {width:150px;height:200px;margin:20px auto;background:url('https://i.imgur.com/796aviX.jpeg') center/cover no-repeat;
-            border-radius:15px;border:3px solid #ff0000;box-shadow:0 0 40px #ff0000 inset,0 0 80px #ff5555;}
-
-/* FIX #5: rcy-box counter is now dynamic via JS, removed hardcoded ::before content */
-#rcy-box {width:100px;height:160px;margin:20px auto;background:url('https://i.imgur.com/Zm6b8fF.png') center/cover no-repeat;
-          border-radius:15px;border:3px solid #ff0000;box-shadow:0 0 40px #ff0000 inset,0 0 80px #ff5555;
-          display:flex;justify-content:center;align-items:center;font-size:32px;font-weight:bold;color:#fff;
-          cursor:pointer;position:relative;overflow:hidden;transition:transform 0.6s,box-shadow 0.3s;}
-#rcy-box-counter {position:absolute;top:8px;left:8px;font-size:18px;color:#fff;text-shadow:0 0 5px #ff0000;pointer-events:none;}
-#rcy-box:hover {transform:rotateY(360deg) scale(1.1) rotateZ(5deg);box-shadow:0 0 60px #ff0000 inset,0 0 120px #ff7777;}
-button.open-btn {margin:5px; padding:12px 18px; font-size:16px; cursor:pointer; border:2px solid #ff0000;
-                 border-radius:10px; background:#111; color:#fff; transition: transform 0.2s, box-shadow 0.2s;}
-button.open-btn:hover {transform: scale(1.05); box-shadow:0 0 20px #ff0000,0 0 40px #ff5555 inset;}
-button.clear-btn {margin:10px 5px; padding:10px 18px; font-size:14px; cursor:pointer; border:2px solid #ff5555;
-                  border-radius:10px; background:#220000; color:#ff9999; transition: transform 0.2s, box-shadow 0.2s;}
-button.clear-btn:hover {transform: scale(1.05); box-shadow:0 0 20px #ff5555;}
-
-/* Deck count display */
-#deck-count {
-  font-size:1em;
-  color:#ffaaaa;
-  text-shadow:0 0 8px #ff0000;
-  margin: 5px 0 10px 0;
+button {
+  padding:10px 20px;
+  margin:10px;
+  background:#6366f1;
+  border:none;
+  border-radius:8px;
+  color:white;
+  cursor:pointer;
 }
 
-/* Cards */
-#recent-pack, #collection, #deck-builder-pool, #deck-builder-deck {display:flex; flex-wrap:wrap; justify-content:center; max-width:900px; margin-top:20px;}
-.card-slot {width:120px;height:160px;margin:10px; perspective:1000px; cursor:pointer;}
-.card-inner {position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform 0.8s;}
-.card-inner.flipped {transform:rotateY(180deg);}
-.card-face {position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:8px; border:2px solid #fff; display:flex;justify-content:center;align-items:center; overflow:hidden;}
-.card-front {background:#222;}
-.card-back {transform:rotateY(180deg); background-size:cover; background-position:center;}
-
-/* FIX #1: Valid box-shadow for SR and UR (no linear-gradient) */
-.sr {box-shadow:0 0 12px 4px gold inset, 0 0 20px gold;}
-.ur {
-  box-shadow:0 0 12px 4px #ff4400 inset, 0 0 25px #ffaa00, 0 0 40px #ff0000;
-  animation:shake 0.5s infinite;
+#results {
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
 }
 
-.uncollected {opacity:0.3; pointer-events:none;} /* FIX #8: disable clicks on uncollected */
-.collected {opacity:1;}
+.card {
+  width:120px;
+  height:170px;
+  margin:10px;
+  perspective:1000px;
+}
 
-/* Modal */
-#card-modal {display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); justify-content:center; align-items:center; z-index:999;}
-#card-modal-content {background:#111; padding:20px; border:2px solid #ff0000; border-radius:15px; color:#fff; max-width:400px; text-align:center; position:relative;}
-#card-modal-content img {max-width:200px; margin:10px;}
-#card-modal-content .close {position:absolute; top:5px; right:10px; cursor:pointer; font-size:20px;}
+.inner {
+  width:100%;
+  height:100%;
+  transform-style:preserve-3d;
+  transition:0.6s;
+}
 
-/* Shake animation for UR */
-@keyframes shake {0%,100%{transform:rotateY(180deg) translateX(0);}25%{transform:rotateY(180deg) translateX(-5px);}75%{transform:rotateY(180deg) translateX(5px);}}
+.flipped {
+  transform:rotateY(180deg);
+}
+
+.front, .back {
+  position:absolute;
+  width:100%;
+  height:100%;
+  backface-visibility:hidden;
+  border-radius:10px;
+}
+
+.front { background:#111; }
+.back { transform:rotateY(180deg); }
+
+.back img {
+  width:100%;
+  height:100%;
+  border-radius:10px;
+}
+
+.UR { box-shadow:0 0 30px gold; animation:shake 0.5s infinite; }
+.SR { box-shadow:0 0 20px violet; }
+.R { box-shadow:0 0 10px deepskyblue; }
+
+@keyframes shake {
+  0%{transform:rotateY(180deg) translateX(0);}
+  50%{transform:rotateY(180deg) translateX(5px);}
+  100%{transform:rotateY(180deg) translateX(-5px);}
+}
+
+/* VIEWER */
+#viewer {
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.9);
+  display:none;
+  justify-content:center;
+  align-items:center;
+}
+
+#viewerContent {
+  background:#111;
+  padding:20px;
+  border-radius:12px;
+  width:300px;
+}
+#viewerContent img { width:100%; }
 </style>
-<script src="https://sites.super.myninja.ai/_assets/ninja-daytona-script.js"></script>
 </head>
+
 <body>
 
-<div id="sidebar">
-  <h2>RCY Menu</h2>
-  <div class="sidebar-btn" onclick="showSection('pack-opener')">Pack Opener</div>
-  <div class="sidebar-btn" onclick="showSection('recent-pack-section')">Recent Pack</div>
-  <div class="sidebar-btn" onclick="showSection('collection-section')">Collection</div>
-  <div class="sidebar-btn" onclick="showSection('deck-builder')">Deck Builder</div>
-</div>
+<h1>🔥 Byteblade Pack Simulator</h1>
 
-<div id="main-content">
-  <div id="pack-opener" class="section active">
-    <h1 style="text-align:center;">First Generation RCY</h1>
-    <div id="box-cover"></div>
-    <!-- FIX #5: Dynamic pack counter span inside rcy-box -->
-    <div id="rcy-box">
-      <span id="rcy-box-counter">0</span>
-    </div>
-    <div id="tokens-display">Tokens: <span id="tokens">0</span></div>
-    <div style="text-align:center;">
-      <button class="open-btn" onclick="openPack(1)">Open 1 Pack (10 Tokens)</button>
-      <button class="open-btn" onclick="openPack(5)">Open 5 Packs (20 Tokens)</button>
-      <button class="open-btn" onclick="openPack(10)">Open 10 Packs (50 Tokens)</button>
-      <button class="open-btn" onclick="openPack(20)">Open 20 Packs (100 Tokens)</button>
-      <button class="open-btn" onclick="openPack(30)">Open 30 Packs (200 Tokens)</button>
-    </div>
-  </div>
+<button onclick="openPack(1)">1 Pack</button>
+<button onclick="openPack(5)">5 Packs</button>
+<button onclick="openPack(10)">10 Packs</button>
 
-  <div id="recent-pack-section" class="section">
-    <h2>Recently Opened Pack</h2>
-    <div id="recent-pack"></div>
-  </div>
+<div id="results"></div>
 
-  <div id="collection-section" class="section">
-    <h2>Collection</h2>
-    <div id="collection"></div>
-  </div>
-
-  <div id="deck-builder" class="section">
-    <h2>Deck Builder</h2>
-    <h3>Card Pool</h3>
-    <div id="deck-builder-pool"></div>
-    <h3>Your Deck &nbsp;
-      <!-- FIX #6: Clear Deck button -->
-      <button class="clear-btn" onclick="clearDeck()">🗑 Clear Deck</button>
-    </h3>
-    <!-- FIX #7: Deck count display -->
-    <div id="deck-count">Cards in Deck: <span id="deck-count-num">0</span> / 40</div>
-    <div id="deck-builder-deck"></div>
+<div id="viewer" onclick="closeViewer()">
+  <div id="viewerContent">
+    <img id="vImg">
+    <h2 id="vName"></h2>
+    <p id="vStats"></p>
+    <p id="vEffect"></p>
   </div>
 </div>
-
-<div id="card-modal">
-  <div id="card-modal-content">
-    <span class="close" onclick="closeModal()">&times;</span>
-    <img id="modal-img" src="" alt="">
-    <h3 id="modal-name"></h3>
-    <p id="modal-type"></p>
-    <p id="modal-atkdef"></p>
-    <p id="modal-effect"></p>
-  </div>
-</div>
-
-<audio id="packSound" src="https://freesound.org/data/previews/256/256113_3263906-lq.mp3"></audio>
-<audio id="flipSound" src="https://freesound.org/data/previews/341/341695_3248240-lq.mp3"></audio>
-<audio id="rareSound" src="https://freesound.org/data/previews/141/141644_1871006-lq.mp3"></audio>
 
 <script>
-// ---------- NAV ----------
-function showSection(id){
-  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-}
 
-// ---------- TOKENS ----------
-let tokens = parseInt(localStorage.getItem('tokens')) || 0;
-let lastLogin = localStorage.getItem('lastLogin');
-let today = new Date().toDateString();
-if(!localStorage.getItem('firstTime')) {
-  tokens += 1000;
-  localStorage.setItem('firstTime','done');
-  alert("🎉 First login bonus! 1000 tokens!");
-}
-if(lastLogin !== today){
-  tokens += 10;
-  localStorage.setItem('lastLogin', today);
-}
-document.getElementById('tokens').innerText = tokens;
-localStorage.setItem('tokens', tokens);
+const cards = [
 
-// ---------- PACK COUNTER (FIX #5) ----------
-let totalPacksOpened = parseInt(localStorage.getItem('totalPacksOpened')) || 0;
-document.getElementById('rcy-box-counter').innerText = totalPacksOpened;
+{ name:"Byteblade Initiate", rarity:"R", img:"https://i.imgur.com/A6bjtgJ.png",
+effect:"If you control no monsters: Special Summon this card. If sent to GY: Add 1 Byteblade card.",
+atk:1200, def:800 },
 
-// ---------- CARD POOL ----------
-// FIX #2: Byteblade Vanguard now has a unique placeholder image (replace URL with real art)
-const cardPool = [
-  {name:"Meno the Water Witch",         type:"Link 1 WATER Spellcaster",      atkdef:"ATK 500",               effect:"1 monster <=1000 ATK or 1 Spellcaster. Spell counter boosts ATK. Quick Effect: Remove 3 counters to Special Summon 1 Level 4 or lower from hand. Once per turn.",                                                                                                                                       imageUrl:"https://i.imgur.com/mst9ADC.jpeg", rarity:"SR"},
-  {name:"Windy Breeze Mia",             type:"Link 1 WIND Warrior",           atkdef:"ATK 700",               effect:"Link Summon: Discard 1 card; gain 1 additional Normal Summon for WIND monster. Used as Link material: add 1 WIND monster from Deck. Once per turn.",                                                                                                                                                      imageUrl:"https://i.imgur.com/efgGdFr.jpeg", rarity:"R"},
-  {name:"Shimmering Summer Breeze",     type:"Level 3 LIGHT Winged Beast Tuner", atkdef:"ATK 0 / DEF 1300",  effect:"Quick Effect: When a card/effect activates with certain effects, discard this card; negate effect. Once per turn.",                                                                                                                                                                                         imageUrl:"https://i.imgur.com/Rki26bX.jpeg", rarity:"SR"},
-  {name:"D-Lord",                       type:"Level 8 DARK Fiend",            atkdef:"ATK 2300 / DEF 2000",   effect:"Special Summon by sending 1 card from hand/field. Normal/Special Summon: banish 1 monster from GY; add 1 monster from Deck same attribute. Opponent turn GY: send 1 card field to GY; Special Summon this card. Once per turn.",                                                                          imageUrl:"https://i.imgur.com/xm80gU6.jpeg", rarity:"UR"},
-  {name:"Byteblade Initiate",           type:"Level 3 DARK Cyberse",          atkdef:"ATK 1200 / DEF 800",    effect:"If you control no monsters: Special Summon from hand. If sent to GY: add 1 'Byteblade' card from Deck. Once per turn.",                                                                                                                                                                                    imageUrl:"https://i.imgur.com/A6bjtgJ.png",  rarity:"N"},
-  {name:"Byteblade Slicer",             type:"Level 4 DARK Cyberse",          atkdef:"ATK 1500 / DEF 1000",   effect:"Special Summon if only Byteblade monsters control field. Normal/Special Summon: Special Summon 1 Byteblade from hand or GY. Once per turn.",                                                                                                                                                               imageUrl:"https://i.imgur.com/hvbqeZw.png",  rarity:"N"},
-  // FIX #2: Vanguard image changed from duplicate hvbqeZw to a distinct placeholder
-  {name:"Byteblade Vanguard",           type:"Level 2 DARK Cyberse",          atkdef:"ATK 1000 / DEF 1000",   effect:"Banish from GY: Add 1 Byteblade Spell or Trap from Deck to hand. Once per turn.",                                                                                                                                                                                                                         imageUrl:"https://i.imgur.com/CFANwSb.png",  rarity:"R"},
-  {name:"Byteblade Root Access Kernel", type:"Level 4 Tuner DARK Cyberse",    atkdef:"ATK 1800 / DEF 0",      effect:"Send 1 Cyberse from Deck to GY; Special Summon this from hand. Cannot Extra Deck Summon non-Byteblade Links this turn. Normal/Special Summon: Add 1 Byteblade from GY. Once per effect per turn.",                                                                                                         imageUrl:"https://i.imgur.com/CFANwSb.png",  rarity:"R"},
-  {name:"Byteblade Crusader",           type:"Level 6 DARK Cyberse",          atkdef:"ATK 2000 / DEF 1800",   effect:"Quick Effect: Send 1 other Byteblade from hand/field to GY; Special Summon this from hand. Normal/Special Summon: Special Summon 1 Byteblade from Deck (except Crusader). Link material: can use hand monsters for Byteblade Link Summon this turn. Once per effect per turn.",                           imageUrl:"https://i.imgur.com/CbeOYmF.png",  rarity:"SR"},
-  {name:"Redzone Byteblade Imposter",   type:"Level 4 FIRE Machine",          atkdef:"ATK 0 / DEF 2000",      effect:"Normal/Special Summon: Add 1 Redzone/Ignition Spell or 1 Byteblade Monster to hand. Sent to GY while controlling FIRE Machine/Cyberse: Special Summon it, negate effects. End Phase: Banish to destroy 1 opponent card. Once per effect per turn.",                                                       imageUrl:"https://i.imgur.com/as0SBsf.png",  rarity:"R"},
-  {name:"Byteblade Hacker",             type:"Link 2 DARK Cyberse",           atkdef:"ATK 2000",              effect:"2 Cyberse monsters. Link Summon: Special Summon 1 Byteblade Link from GY to zone. Cyberse Special Summoned to this zone: Draw 1. Once per effect per turn.",                                                                                                                                               imageUrl:"https://i.imgur.com/xIbjKpE.png",  rarity:"SR"},
-  {name:"Byteblade Encoder",            type:"Link 2 DARK Cyberse",           atkdef:"ATK 2200",              effect:"2 Cyberse including 1 Byteblade. Discard 1: Add 1 Byteblade from Deck. Main Phase: Special Summon 1 Byteblade from Deck to zone, negate effects. Cannot Extra Deck Summon non-Cyberse Links. Once per effect per turn.",                                                                                   imageUrl:"https://i.imgur.com/Sb4i68Q.png",  rarity:"SR"},
-  {name:"Byteblade Overclock",          type:"Link 3 DARK Cyberse",           atkdef:"ATK 2800",              effect:"2+ Cyberse including 1 Byteblade Tuner. Link Summon: Special Summon 1 Byteblade from GY to zone, negate effects. Quick Effect: Opponent activates monster/Spell/Trap: send 1 Cyberse from hand/Deck to GY; negate and destroy. Once per effect per turn.",                                                imageUrl:"https://i.imgur.com/zVoiXER.png",  rarity:"UR"},
-  {name:"Byteblade System Dragbit",     type:"Link 4 DARK Cyberse",           atkdef:"ATK 3000",              effect:"3+ Cyberse including 1 Link-2 and 1 Effect. Link Summon: Special Summon up to 2 Byteblade from GY to zones. Control another Byteblade Link: opponent monsters summoned DEF negated. Quick Effect: Destroy 1 Cyberse or banish 1 Byteblade GY to negate opponent Spell/Trap. Once per effect per turn.",  imageUrl:"https://i.imgur.com/hl5dw5P.png",  rarity:"UR"}
+{ name:"Byteblade Slicer", rarity:"R", img:"https://i.imgur.com/hvbqeZw.png",
+effect:"Special Summon if only Byteblade monsters. Summon: Special Summon 1 Byteblade.",
+atk:1500, def:1000 },
+
+{ name:"Byteblade Vanguard", rarity:"R", img:"https://i.imgur.com/CFANwSb.png",
+effect:"Banish from GY: Add 1 Byteblade Spell/Trap.",
+atk:1000, def:1000 },
+
+{ name:"Byteblade Root Access Kernel", rarity:"SR", img:"https://i.imgur.com/CFANwSb.png",
+effect:"Send Cyberse to GY; Special Summon this. Add Byteblade from GY.",
+atk:1800, def:0 },
+
+{ name:"Byteblade Crusader", rarity:"SR", img:"https://i.imgur.com/CbeOYmF.png",
+effect:"Quick: Send Byteblade; Special Summon. Summon: Special Summon from Deck.",
+atk:2000, def:1800 },
+
+{ name:"Byteblade Hacker", rarity:"SR", img:"https://i.imgur.com/xIbjKpE.png",
+effect:"Revive Link. Draw when Cyberse summoned.",
+atk:2000, def:0 },
+
+{ name:"Byteblade Encoder", rarity:"SR", img:"https://i.imgur.com/Sb4i68Q.png",
+effect:"Discard: Add Byteblade. Summon from Deck negated.",
+atk:2200, def:0 },
+
+{ name:"Byteblade Overclock", rarity:"UR", img:"https://i.imgur.com/zVoiXER.png",
+effect:"Negate anything by sending Cyberse.",
+atk:2800, def:0 },
+
+{ name:"Byteblade System Dragbit", rarity:"UR", img:"https://i.imgur.com/hl5dw5P.png",
+effect:"Summon 2. Negate spells/traps.",
+atk:3000, def:0 }
+
 ];
 
-// ---------- COLLECTION ----------
-function updateCollectionDisplay(){
-  const collectionDiv = document.getElementById('collection');
-  let collection = JSON.parse(localStorage.getItem('collection')) || [];
-  collectionDiv.innerHTML = "";
-  cardPool.forEach(card => {
-    const slot = document.createElement('div');
-    slot.className = 'card-slot';
-    const inner = document.createElement('div');
-    inner.className = 'card-inner flipped';
-    inner.innerHTML = `<div class="card-face card-front"></div>
-                       <div class="card-face card-back ${card.rarity==='SR'?'sr':card.rarity==='UR'?'ur':''}">
-                         <img src="${card.imageUrl}" alt="${card.name}" style="width:100%;height:100%;object-fit:cover;">
-                       </div>`;
-    if(collection.includes(card.name)){
-      inner.classList.remove('flipped');
-      inner.classList.add('collected');
-    } else {
-      inner.classList.add('uncollected');
-    }
-    inner.onclick = () => showModal(card);
-    slot.appendChild(inner);
-    collectionDiv.appendChild(slot);
-  });
-}
-updateCollectionDisplay();
+const rates = {UR:0.02, SR:0.08, R:0.3, C:0.6};
 
-// ---------- DECK BUILDER ----------
-function updateDeckBuilder(){
-  const poolDiv = document.getElementById('deck-builder-pool');
-  const deckDiv = document.getElementById('deck-builder-deck');
-  let collection = JSON.parse(localStorage.getItem('collection')) || [];
-  let deck = JSON.parse(localStorage.getItem('deck')) || [];
-  poolDiv.innerHTML = "";
-  deckDiv.innerHTML = "";
-
-  // FIX #7: Update deck count display
-  document.getElementById('deck-count-num').innerText = deck.length;
-
-  cardPool.forEach(card => {
-    const slot = document.createElement('div');
-    slot.className = 'card-slot';
-    const inner = document.createElement('div');
-    inner.className = 'card-inner flipped';
-    inner.innerHTML = `<div class="card-face card-front"></div>
-                       <div class="card-face card-back ${card.rarity==='SR'?'sr':card.rarity==='UR'?'ur':''}">
-                         <img src="${card.imageUrl}" alt="${card.name}" style="width:100%;height:100%;object-fit:cover;">
-                       </div>`;
-
-    if(collection.includes(card.name)){
-      inner.classList.remove('flipped');
-      inner.classList.add('collected');
-      // FIX #8: Only collected cards are clickable (uncollected have pointer-events:none via CSS)
-      inner.onclick = () => {
-        if(deck.includes(card.name)){ alert("Card already in deck!"); return; }
-        if(deck.length >= 40){ alert("Deck is full (40 cards max)!"); return; }
-        deck.push(card.name);
-        localStorage.setItem('deck', JSON.stringify(deck));
-        updateDeckBuilder();
-      };
-    } else {
-      inner.classList.add('uncollected');
-    }
-    slot.appendChild(inner);
-    poolDiv.appendChild(slot);
-  });
-
-  deck.forEach(cardName => {
-    const card = cardPool.find(c => c.name === cardName);
-    if(!card) return;
-    const slot = document.createElement('div');
-    slot.className = 'card-slot';
-    const inner = document.createElement('div');
-    inner.className = 'card-inner';
-    inner.innerHTML = `<div class="card-face card-front"></div>
-                       <div class="card-face card-back ${card.rarity==='SR'?'sr':card.rarity==='UR'?'ur':''}">
-                         <img src="${card.imageUrl}" alt="${card.name}" style="width:100%;height:100%;object-fit:cover;">
-                       </div>`;
-    inner.title = "Click to remove from deck";
-    inner.onclick = () => {
-      deck = deck.filter(c => c !== cardName);
-      localStorage.setItem('deck', JSON.stringify(deck));
-      updateDeckBuilder();
-    };
-    slot.appendChild(inner);
-    deckDiv.appendChild(slot);
-  });
-}
-updateDeckBuilder();
-
-// FIX #6: Clear Deck function
-function clearDeck(){
-  if(!confirm("Clear your entire deck?")) return;
-  localStorage.setItem('deck', JSON.stringify([]));
-  updateDeckBuilder();
+function getRarity(){
+let r=Math.random();
+if(r<rates.UR)return"UR";
+if(r<rates.UR+rates.SR)return"SR";
+if(r<rates.UR+rates.SR+rates.R)return"R";
+return"C";
 }
 
-// ---------- MODAL ----------
-function showModal(card){
-  document.getElementById('modal-img').src = card.imageUrl;
-  document.getElementById('modal-name').innerText = card.name;
-  document.getElementById('modal-type').innerText = card.type;
-  document.getElementById('modal-atkdef').innerText = card.atkdef;
-  document.getElementById('modal-effect').innerText = card.effect;
-  document.getElementById('card-modal').style.display = 'flex';
+function openPack(count){
+const res=document.getElementById("results");
+res.innerHTML="";
+
+for(let i=0;i<count;i++){
+for(let j=0;j<5;j++){
+
+let rarity=getRarity();
+let pool=cards.filter(c=>c.rarity===rarity);
+if(pool.length===0) pool=cards;
+
+let card=pool[Math.floor(Math.random()*pool.length)];
+
+let div=document.createElement("div");
+div.className="card";
+
+let inner=document.createElement("div");
+inner.className="inner";
+
+inner.innerHTML=`
+<div class="front"></div>
+<div class="back ${rarity}">
+<img src="${card.img}">
+</div>
+`;
+
+div.appendChild(inner);
+res.appendChild(div);
+
+setTimeout(()=>inner.classList.add("flipped"),100*j);
+
+div.onclick=()=>showCard(card);
 }
-function closeModal(){ document.getElementById('card-modal').style.display = 'none'; }
-
-// ---------- PACK OPENING ----------
-// FIX #4: firstOpen moved to module-level so it doesn't reset each call
-let firstOpen = (JSON.parse(localStorage.getItem('collection')) || []).length === 0;
-
-function openPack(packCount){
-  let cost = packCount==1?10:packCount==5?20:packCount==10?50:packCount==20?100:200;
-  if(tokens < cost){ alert("Not enough tokens!"); return; }
-  tokens -= cost;
-  localStorage.setItem('tokens', tokens);
-  document.getElementById('tokens').innerText = tokens;
-
-  // FIX #5: Update pack counter
-  totalPacksOpened += packCount;
-  localStorage.setItem('totalPacksOpened', totalPacksOpened);
-  document.getElementById('rcy-box-counter').innerText = totalPacksOpened;
-
-  const recentDiv = document.getElementById('recent-pack');
-  recentDiv.innerHTML = "";
-
-  try { document.getElementById('packSound').play(); } catch(e){}
-
-  // FIX #3: Auto-switch to Recent Pack section
-  showSection('recent-pack-section');
-
-  let collection = JSON.parse(localStorage.getItem('collection')) || [];
-
-  for(let i = 0; i < packCount; i++){
-    for(let j = 0; j < 5; j++){
-      let rarityRoll = Math.random();
-      let cardCandidates = cardPool.filter(c => c.rarity === "N");
-      if(rarityRoll < 0.01)       { cardCandidates = cardPool.filter(c => c.rarity === "UR"); }
-      else if(rarityRoll < 0.03)  { cardCandidates = cardPool.filter(c => c.rarity === "SR"); }
-      else if(rarityRoll < 0.1)   { cardCandidates = cardPool.filter(c => c.rarity === "R");  }
-
-      const card = cardCandidates[Math.floor(Math.random() * cardCandidates.length)];
-
-      const slot = document.createElement('div');
-      slot.className = 'card-slot';
-      const inner = document.createElement('div');
-      inner.className = 'card-inner flipped';
-      inner.innerHTML = `<div class="card-face card-front"></div>
-                          <div class="card-face card-back ${card.rarity==='SR'?'sr':card.rarity==='UR'?'ur':''}">
-                            <img src="${card.imageUrl}" alt="${card.name}" style="width:100%;height:100%;object-fit:cover;">
-                          </div>`;
-      inner.onclick = () => showModal(card);
-      slot.appendChild(inner);
-      recentDiv.appendChild(slot);
-
-      setTimeout(() => {
-        inner.classList.remove('flipped');
-        try { document.getElementById('flipSound').play(); } catch(e){}
-
-        if(card.rarity === 'UR'){
-          try { document.getElementById('rareSound').play(); } catch(e){}
-        }
-
-        // FIX #4: firstOpen is module-level; alert fires only once ever
-        if(!collection.includes(card.name)){
-          collection.push(card.name);
-          if(firstOpen){
-            alert("🎉 You got your first card: " + card.name + "!");
-            firstOpen = false;
-          }
-        }
-
-        localStorage.setItem('collection', JSON.stringify(collection));
-        updateCollectionDisplay();
-        updateDeckBuilder();
-      }, i * 1000 + j * 400);
-    }
-  }
 }
+}
+
+function showCard(card){
+document.getElementById("viewer").style.display="flex";
+document.getElementById("vImg").src=card.img;
+document.getElementById("vName").innerText=card.name;
+document.getElementById("vStats").innerText=`ATK ${card.atk} / DEF ${card.def}`;
+document.getElementById("vEffect").innerText=card.effect;
+}
+
+function closeViewer(){
+document.getElementById("viewer").style.display="none";
+}
+
 </script>
+
 </body>
 </html>
