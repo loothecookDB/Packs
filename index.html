@@ -3,130 +3,86 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>First Generation RCY Pack Opener</title>
+<title>RCY Pack Opener & Deck Builder</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
-  body {
-    margin:0; padding:0;
-    font-family: 'Orbitron', sans-serif;
-    background: url('https://cdn.discordapp.com/attachments/1398179743496536168/1483585527700652032/IMG_4088.jpeg?ex=69bb2031&is=69b9ceb1&hm=a8733bdc401869b2be45f4de58dc8b7dd8050e2645ab8cf99f9db05de596f451') center/cover no-repeat fixed;
-    color: #fff;
-    display: flex;
-  }
-  /* Sidebar */
-  #sidebar {
-    width: 200px;
-    background: rgba(0,0,0,0.85);
-    border-right: 2px solid #ff0000;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    height: 100vh;
-    box-shadow: 2px 0 20px #ff0000 inset;
-  }
-  #sidebar h2 {
-    color: #ff0000;
-    text-shadow: 0 0 10px #ff0000;
-    font-size: 1.6em;
-    margin-bottom: 30px;
-  }
-  .sidebar-btn {
-    width: 160px;
-    margin: 10px 0;
-    padding: 10px;
-    background: #111;
-    border: 2px solid #ff0000;
-    border-radius: 10px;
-    color: #fff;
-    font-size: 16px;
-    cursor: pointer;
-    text-align: center;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-  }
-  .sidebar-btn:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 20px #ff0000, 0 0 40px #ff5555 inset;
-  }
-  /* Main Content */
-  #main-content {flex:1; padding:20px; overflow-y:auto;}
-  .section {display:none;}
-  .active {display:block;}
-  /* Box & pack display */
-  #box-cover {
-    width: 150px; height:200px;
-    margin:20px auto;
-    background: url('https://i.imgur.com/796aviX.jpeg') center/cover no-repeat;
-    border-radius:15px;
-    border:3px solid #ff0000;
-    box-shadow:0 0 40px #ff0000 inset,0 0 80px #ff5555;
-  }
-  #rcy-box {
-    width:100px;height:160px;
-    margin:20px auto;
-    background: url('https://i.imgur.com/Zm6b8fF.png') center/cover no-repeat;
-    border-radius:15px;
-    border:3px solid #ff0000;
-    box-shadow:0 0 40px #ff0000 inset,0 0 80px #ff5555;
-    display:flex; justify-content:center; align-items:center;
-    font-size:32px; font-weight:bold; color:#fff; cursor:pointer;
-    position:relative; overflow:hidden;
-    transition: transform 0.6s ease, box-shadow 0.3s ease;
-  }
-  #rcy-box::before {
-    content:"1";
-    position:absolute; top:8px; left:8px; font-size:24px;
-    color:#fff; text-shadow:0 0 5px #ff0000;
-  }
-  #rcy-box:hover {
-    transform: rotateY(360deg) scale(1.1) rotateZ(5deg);
-    box-shadow:0 0 60px #ff0000 inset,0 0 120px #ff7777;
-  }
-  button.open-btn {
-    margin:5px; padding:12px 18px;
-    font-size:16px; cursor:pointer;
-    border:2px solid #ff0000; border-radius:10px;
-    background:#111; color:#fff;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-  }
-  button.open-btn:hover {
-    transform: scale(1.05);
-    box-shadow:0 0 20px #ff0000,0 0 40px #ff5555 inset;
-  }
-  #tokens-display {
-    font-size: 18px;
-    margin: 10px 0;
-    text-align:center;
-    padding:5px 10px;
-    border:2px solid #ff0000;
-    border-radius:10px;
-    background: rgba(0,0,0,0.7);
-  }
-  /* Pack animation */
-  #recent-pack, #collection, #deck-builder-pool, #deck-builder-deck {
-    display:flex; flex-wrap:wrap; justify-content:center; max-width:900px; margin-top:20px;
-  }
-  .card-slot {
-    width:120px; height:160px; margin:10px; perspective:1000px;
-  }
-  .card-inner {
-    position: relative; width:100%; height:100%; transform-style: preserve-3d; transition: transform 0.8s;
-  }
-  .card-inner.flipped {transform: rotateY(180deg);}
-  .card-face {
-    position:absolute; width:100%; height:100%; backface-visibility:hidden;
-    border-radius:8px; border:2px solid #fff; overflow:hidden;
-  }
-  .card-front {background:#222; display:flex; justify-content:center; align-items:center;}
-  .card-back {transform: rotateY(180deg); background-size:cover; background-position:center;}
-  .sr {box-shadow:0 0 15px gold inset;}
-  .ur {box-shadow:0 0 15px linear-gradient(45deg, red, orange, yellow, green, blue, violet) inset;}
-  .collected {opacity:1;}
-  .uncollected {opacity:0.3;}
-  #card-modal {display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); justify-content:center; align-items:center; z-index:999;}
-  #card-modal-content {background:#111; padding:20px; border:2px solid #ff0000; border-radius:15px; color:#fff; max-width:400px; text-align:center; position:relative;}
-  #card-modal-content img {max-width:200px; margin:10px;}
-  #card-modal-content .close {position:absolute; top:5px; right:10px; cursor:pointer; font-size:20px;}
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+
+body {
+  margin:0; padding:0;
+  font-family: 'Orbitron', sans-serif;
+  color:#fff;
+  background: url('https://cdn.discordapp.com/attachments/1398179743496536168/1483585527700652032/IMG_4088.jpeg') center/cover no-repeat fixed;
+  display:flex;
+}
+
+/* Sidebar */
+#sidebar {
+  width: 200px;
+  background: rgba(0,0,0,0.85);
+  border-right:2px solid #ff0000;
+  padding:20px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  height:100vh;
+  box-shadow:2px 0 20px #ff0000 inset;
+}
+#sidebar h2 {
+  color:#ff0000;
+  text-shadow:0 0 10px #ff0000;
+  font-size:1.6em;
+  margin-bottom:30px;
+}
+.sidebar-btn {
+  width:160px;
+  margin:10px 0;
+  padding:10px;
+  background:#111;
+  border:2px solid #ff0000;
+  border-radius:10px;
+  cursor:pointer;
+  text-align:center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.sidebar-btn:hover {
+  transform: scale(1.05);
+  box-shadow:0 0 20px #ff0000,0 0 40px #ff5555 inset;
+}
+
+/* Main content */
+#main-content {flex:1; padding:20px; overflow-y:auto;}
+.section {display:none;}
+.active {display:block;}
+#tokens-display {text-align:center; margin:10px 0; padding:5px 10px; border:2px solid #ff0000; border-radius:10px; background:rgba(0,0,0,0.7);}
+#box-cover {width:150px;height:200px;margin:20px auto;background:url('https://i.imgur.com/796aviX.jpeg') center/cover no-repeat;border-radius:15px;border:3px solid #ff0000;box-shadow:0 0 40px #ff0000 inset,0 0 80px #ff5555;}
+#rcy-box {width:100px;height:160px;margin:20px auto;background:url('https://i.imgur.com/Zm6b8fF.png') center/cover no-repeat;border-radius:15px;border:3px solid #ff0000;box-shadow:0 0 40px #ff0000 inset,0 0 80px #ff5555;display:flex;justify-content:center;align-items:center;font-size:32px;font-weight:bold;color:#fff;cursor:pointer;position:relative;overflow:hidden;transition:transform 0.6s ease,box-shadow 0.3s ease;}
+#rcy-box::before {content:"1";position:absolute;top:8px;left:8px;font-size:24px;color:#fff;text-shadow:0 0 5px #ff0000;}
+#rcy-box:hover {transform:rotateY(360deg) scale(1.1) rotateZ(5deg);box-shadow:0 0 60px #ff0000 inset,0 0 120px #ff7777;}
+
+button.open-btn {margin:5px; padding:12px 18px; font-size:16px; cursor:pointer; border:2px solid #ff0000; border-radius:10px; background:#111; color:#fff; transition: transform 0.2s ease, box-shadow 0.2s ease;}
+button.open-btn:hover {transform: scale(1.05); box-shadow:0 0 20px #ff0000,0 0 40px #ff5555 inset;}
+
+/* Cards */
+#recent-pack, #collection, #deck-builder-pool, #deck-builder-deck {display:flex; flex-wrap:wrap; justify-content:center; max-width:900px; margin-top:20px;}
+.card-slot {width:120px;height:160px;margin:10px; perspective:1000px; cursor:pointer;}
+.card-inner {position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform 0.8s;}
+.card-inner.flipped {transform:rotateY(180deg);}
+.card-face {position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:8px; border:2px solid #fff; display:flex;justify-content:center;align-items:center; overflow:hidden;}
+.card-front {background:#222;}
+.card-back {transform:rotateY(180deg); background-size:cover; background-position:center;}
+.sr {box-shadow:0 0 15px gold inset;}
+.ur {box-shadow:0 0 15px linear-gradient(45deg, red, orange, yellow, green, blue, violet) inset;}
+.uncollected {opacity:0.3;}
+.collected {opacity:1;}
+
+/* Modal */
+#card-modal {display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); justify-content:center; align-items:center; z-index:999;}
+#card-modal-content {background:#111; padding:20px; border:2px solid #ff0000; border-radius:15px; color:#fff; max-width:400px; text-align:center; position:relative;}
+#card-modal-content img {max-width:200px; margin:10px;}
+#card-modal-content .close {position:absolute; top:5px; right:10px; cursor:pointer; font-size:20px;}
+
+/* Shake animation for UR */
+@keyframes shake {0%,100%{transform:translateX(0);}25%{transform:translateX(-5px);}75%{transform:translateX(5px);}}
 </style>
 </head>
 <body>
@@ -184,19 +140,19 @@
   </div>
 </div>
 
-<!-- Sound effects -->
+<!-- Sounds -->
 <audio id="packSound" src="https://freesound.org/data/previews/256/256113_3263906-lq.mp3"></audio>
 <audio id="flipSound" src="https://freesound.org/data/previews/341/341695_3248240-lq.mp3"></audio>
 <audio id="rareSound" src="https://freesound.org/data/previews/141/141644_1871006-lq.mp3"></audio>
 
 <script>
-/* ------------------- NAVIGATION ------------------- */
+/* ---------------- NAVIGATION ---------------- */
 function showSection(id){
   document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
 }
 
-/* ------------------- TOKEN SYSTEM ------------------- */
+/* ---------------- TOKEN SYSTEM ---------------- */
 let tokens = parseInt(localStorage.getItem('tokens')) || 0;
 let lastLogin = localStorage.getItem('lastLogin');
 let today = new Date().toDateString();
@@ -212,45 +168,63 @@ if(lastLogin!==today){
 document.getElementById('tokens').innerText = tokens;
 localStorage.setItem('tokens',tokens);
 
-/* ------------------- CARD POOL ------------------- */
-const cardPool = [
-  {name:"Byteblade Initiate", type:"Level 3 DARK Cyberse", atkdef:"ATK 1200 / DEF 800", effect:"If you control no monsters: Special Summon from hand. If sent to GY: add 1 'Byteblade' card from Deck. Once per turn.", imageUrl:"https://i.imgur.com/A6bjtgJ.png", rarity:"N"},
-  {name:"Byteblade Slicer", type:"Level 4 DARK Cyberse", atkdef:"ATK 1500 / DEF 1000", effect:"Special Summon if only Byteblade monsters control field. Normal/Special Summon: Special Summon 1 Byteblade from hand or GY. Once per turn.", imageUrl:"https://i.imgur.com/hvbqeZw.png", rarity:"N"},
-  {name:"Byteblade Vanguard", type:"Level 2 DARK Cyberse", atkdef:"ATK 1000 / DEF 1000", effect:"Banish from GY: Add 1 Byteblade Spell or Trap from Deck to hand. Once per turn.", imageUrl:"https://i.imgur.com/hvbqeZw.png", rarity:"R"},
-  {name:"Byteblade Root Access Kernel", type:"Level 4 Tuner DARK Cyberse", atkdef:"ATK 1800 / DEF 0", effect:"Send 1 Cyberse from Deck to GY; Special Summon this from hand. Cannot Extra Deck Summon non-Byteblade Links this turn. Normal/Special Summon: Add 1 Byteblade from GY. Once per effect per turn.", imageUrl:"https://i.imgur.com/CFANwSb.png", rarity:"R"},
-  {name:"Byteblade Crusader", type:"Level 6 DARK Cyberse", atkdef:"ATK 2000 / DEF 1800", effect:"Quick Effect: Send 1 other Byteblade from hand/field to GY; Special Summon this from hand. Normal/Special Summon: Special Summon 1 Byteblade from Deck (except Crusader). Link material: can use hand monsters for Byteblade Link Summon this turn. Once per effect per turn.", imageUrl:"https://i.imgur.com/CbeOYmF.png", rarity:"SR"},
-  {name:"Redzone Byteblade Imposter", type:"Level 4 FIRE Machine", atkdef:"ATK 0 / DEF 2000", effect:"Normal/Special Summon: Add 1 Redzone/Ignition Spell or 1 Byteblade Monster to hand. Sent to GY while controlling FIRE Machine/Cyberse: Special Summon it, negate effects. End Phase: Banish to destroy 1 opponent card. Once per effect per turn.", imageUrl:"https://i.imgur.com/as0SBsf.png", rarity:"R"},
-  {name:"Byteblade Hacker", type:"Link 2 DARK Cyberse", atkdef:"ATK 2000", effect:"2 Cyberse monsters. Link Summon: Special Summon 1 Byteblade Link from GY to zone. Cyberse Special Summoned to this zone: Draw 1. Once per effect per turn.", imageUrl:"https://i.imgur.com/xIbjKpE.png", rarity:"SR"},
-  {name:"Byteblade Encoder", type:"Link 2 DARK Cyberse", atkdef:"ATK 2200", effect:"2 Cyberse including 1 Byteblade. Discard 1: Add 1 Byteblade from Deck. Main Phase: Special Summon 1 Byteblade from Deck to zone, negate effects. Cannot Extra Deck Summon non-Cyberse Links. Once per effect per turn.", imageUrl:"https://i.imgur.com/Sb4i68Q.png", rarity:"SR"},
-  {name:"Byteblade Overclock", type:"Link 3 DARK Cyberse", atkdef:"ATK 2800", effect:"2+ Cyberse including 1 Byteblade Tuner. Link Summon: Special Summon 1 Byteblade from GY to zone, negate effects. Quick Effect: Opponent activates monster/Spell/Trap: send 1 Cyberse from hand/Deck to GY; negate and destroy. Once per effect per turn.", imageUrl:"https://i.imgur.com/zVoiXER.png", rarity:"UR"},
-  {name:"Byteblade System Dragbit", type:"Link 4 DARK Cyberse", atkdef:"ATK 3000", effect:"3+ Cyberse including 1 Link-2 and 1 Effect. Link Summon: Special Summon up to 2 Byteblade from GY to zones. Control another Byteblade Link: opponent monsters summoned DEF negated. Quick Effect: Destroy 1 Cyberse or banish 1 Byteblade GY to negate opponent Spell/Trap. Once per effect per turn.", imageUrl:"https://i.imgur.com/hl5dw5P.png", rarity:"UR"},
-  {name:"Meno the Water Witch", type:"Link 1 WATER Spellcaster", atkdef:"ATK 500", effect:"1 monster <=1000 ATK or 1 Spellcaster. Spell counter boosts ATK. Quick Effect: Remove 3 counters to Special Summon 1 Level 4 or lower from hand. Once per turn.", imageUrl:"https://i.imgur.com/mst9ADC.jpeg", rarity:"SR"},
-  {name:"Windy Breeze Mia", type:"Link 1 WIND Warrior", atkdef:"ATK 700", effect:"Link Summon: Discard 1 card; gain 1 additional Normal Summon for WIND monster. Used as Link material: add 1 WIND monster from Deck. Once per turn.", imageUrl:"https://i.imgur.com/efgGdFr.jpeg", rarity:"R"},
-  {name:"Shimmering Summer Breeze", type:"Level 3 LIGHT Winged Beast Tuner", atkdef:"ATK 0 / DEF 1300", effect:"Quick Effect: When a card/effect activates with certain effects, discard this card; negate effect. Once per turn.", imageUrl:"https://i.imgur.com/Rki26bX.jpeg", rarity:"SR"},
-  {name:"D-Lord", type:"Level 8 DARK Fiend", atkdef:"ATK 2300 / DEF 2000", effect:"Special Summon by sending 1 card from hand/field. Normal/Special Summon: banish 1 monster from GY; add 1 monster from Deck same attribute. Opponent turn GY: send 1 card field to GY; Special Summon this card. Once per turn.", imageUrl:"https://i.imgur.com/xm80gU6.jpeg", rarity:"UR"}
+/* ---------------- CARD POOL ---------------- */
+const cardPool=[
+{name:"Byteblade Initiate", type:"Level 3 DARK Cyberse", atkdef:"ATK 1200 / DEF 800", effect:"If you control no monsters: Special Summon from hand. If sent to GY: add 1 'Byteblade' card from Deck. Once per turn.", imageUrl:"https://i.imgur.com/A6bjtgJ.png", rarity:"N"},
+{name:"Byteblade Slicer", type:"Level 4 DARK Cyberse", atkdef:"ATK 1500 / DEF 1000", effect:"Special Summon if only Byteblade monsters control field. Normal/Special Summon: Special Summon 1 Byteblade from hand or GY. Once per turn.", imageUrl:"https://i.imgur.com/hvbqeZw.png", rarity:"N"},
+{name:"Byteblade Vanguard", type:"Level 2 DARK Cyberse", atkdef:"ATK 1000 / DEF 1000", effect:"Banish from GY: Add 1 Byteblade Spell or Trap from Deck to hand. Once per turn.", imageUrl:"https://i.imgur.com/hvbqeZw.png", rarity:"R"},
+{name:"Byteblade Root Access Kernel", type:"Level 4 Tuner DARK Cyberse", atkdef:"ATK 1800 / DEF 0", effect:"Send 1 Cyberse from Deck to GY; Special Summon this from hand. Cannot Extra Deck Summon non-Byteblade Links this turn. Normal/Special Summon: Add 1 Byteblade from GY. Once per effect per turn.", imageUrl:"https://i.imgur.com/CFANwSb.png", rarity:"R"},
+{name:"Byteblade Crusader", type:"Level 6 DARK Cyberse", atkdef:"ATK 2000 / DEF 1800", effect:"Quick Effect: Send 1 other Byteblade from hand/field to GY; Special Summon this from hand. Normal/Special Summon: Special Summon 1 Byteblade from Deck (except Crusader). Link material: can use hand monsters for Byteblade Link Summon this turn. Once per effect per turn.", imageUrl:"https://i.imgur.com/CbeOYmF.png", rarity:"SR"},
+{name:"Redzone Byteblade Imposter", type:"Level 4 FIRE Machine", atkdef:"ATK 0 / DEF 2000", effect:"Normal/Special Summon: Add 1 Redzone/Ignition Spell or 1 Byteblade Monster to hand. Sent to GY while controlling FIRE Machine/Cyberse: Special Summon it, negate effects. End Phase: Banish to destroy 1 opponent card. Once per effect per turn.", imageUrl:"https://i.imgur.com/as0SBsf.png", rarity:"R"},
+{name:"Byteblade Hacker", type:"Link 2 DARK Cyberse", atkdef:"ATK 2000", effect:"2 Cyberse monsters. Link Summon: Special Summon 1 Byteblade Link from GY to zone. Cyberse Special Summoned to this zone: Draw 1. Once per effect per turn.", imageUrl:"https://i.imgur.com/xIbjKpE.png", rarity:"SR"},
+{name:"Byteblade Encoder", type:"Link 2 DARK Cyberse", atkdef:"ATK 2200", effect:"2 Cyberse including 1 Byteblade. Discard 1: Add 1 Byteblade from Deck. Main Phase: Special Summon 1 Byteblade from Deck to zone, negate effects. Cannot Extra Deck Summon non-Cyberse Links. Once per effect per turn.", imageUrl:"https://i.imgur.com/Sb4i68Q.png", rarity:"SR"},
+{name:"Byteblade Overclock", type:"Link 3 DARK Cyberse", atkdef:"ATK 2800", effect:"2+ Cyberse including 1 Byteblade Tuner. Link Summon: Special Summon 1 Byteblade from GY to zone, negate effects. Quick Effect: Opponent activates monster/Spell/Trap: send 1 Cyberse from hand/Deck to GY; negate and destroy. Once per effect per turn.", imageUrl:"https://i.imgur.com/zVoiXER.png", rarity:"UR"},
+{name:"Byteblade System Dragbit", type:"Link 4 DARK Cyberse", atkdef:"ATK 3000", effect:"3+ Cyberse including 1 Link-2 and 1 Effect. Link Summon: Special Summon up to 2 Byteblade from GY to zones. Control another Byteblade Link: opponent monsters summoned DEF negated. Quick Effect: Destroy 1 Cyberse or banish 1 Byteblade GY to negate opponent Spell/Trap. Once per effect per turn.", imageUrl:"https://i.imgur.com/hl5dw5P.png", rarity:"UR"},
+{name:"Meno the Water Witch", type:"Link 1 WATER Spellcaster", atkdef:"ATK 500", effect:"1 monster <=1000 ATK or 1 Spellcaster. Spell counter boosts ATK. Quick Effect: Remove 3 counters to Special Summon 1 Level 4 or lower from hand. Once per turn.", imageUrl:"https://i.imgur.com/mst9ADC.jpeg", rarity:"SR"},
+{name:"Windy Breeze Mia", type:"Link 1 WIND Warrior", atkdef:"ATK 700", effect:"Link Summon: Discard 1 card; gain 1 additional Normal Summon for WIND monster. Used as Link material: add 1 WIND monster from Deck. Once per turn.", imageUrl:"https://i.imgur.com/efgGdFr.jpeg", rarity:"R"},
+{name:"Shimmering Summer Breeze", type:"Level 3 LIGHT Winged Beast Tuner", atkdef:"ATK 0 / DEF 1300", effect:"Quick Effect: When a card/effect activates with certain effects, discard this card; negate effect. Once per turn.", imageUrl:"https://i.imgur.com/Rki26bX.jpeg", rarity:"SR"},
+{name:"D-Lord", type:"Level 8 DARK Fiend", atkdef:"ATK 2300 / DEF 2000", effect:"Special Summon by sending 1 card from hand/field. Normal/Special Summon: banish 1 monster from GY; add 1 monster from Deck same attribute. Opponent turn GY: send 1 card field to GY; Special Summon this card. Once per turn.", imageUrl:"https://i.imgur.com/xm80gU6.jpeg", rarity:"UR"}
 ];
 
-/* ------------------- COLLECTION & DECK BUILDER ------------------- */
+/* ---------------- COLLECTION ---------------- */
 function updateCollectionDisplay(){
   const collectionDiv = document.getElementById('collection');
   let collection = JSON.parse(localStorage.getItem('collection')) || [];
   collectionDiv.innerHTML="";
-  collection.forEach(name=>{
-    const card = cardPool.find(c=>c.name===name);
-    if(card){
-      const slot = document.createElement('div');
-      slot.className='card-slot';
-      const inner = document.createElement('div');
-      inner.className='card-inner flipped';
-      inner.innerHTML=`<div class="card-face card-front"></div>
-      <div class="card-face card-back"><img src="${card.imageUrl}" alt="${card.name}"></div>`;
-      inner.onclick=()=>showModal(card);
-      slot.appendChild(inner);
-      collectionDiv.appendChild(slot);
-    }
+  cardPool.forEach(card=>{
+    const slot = document.createElement('div');
+    slot.className='card-slot';
+    const inner = document.createElement('div');
+    inner.className='card-inner flipped';
+    inner.innerHTML=`<div class="card-face card-front"></div>
+    <div class="card-face card-back ${card.rarity=='SR'?'sr':card.rarity=='UR'?'ur':''}"><img src="${card.imageUrl}" alt="${card.name}"></div>`;
+    if(collection.includes(card.name)){
+      inner.classList.remove('flipped');
+    } else {inner.classList.add('flipped');}
+    inner.onclick=()=>showModal(card);
+    slot.appendChild(inner);
+    collectionDiv.appendChild(slot);
   });
 }
+
+/* ---------------- MODAL ---------------- */
 function showModal(card){
   document.getElementById('modal-img').src = card.imageUrl;
   document.getElementById('modal-name').innerText = card.name;
-  document.getElementById('modal-type
+  document.getElementById('modal-type').innerText = card.type;
+  document.getElementById('modal-atkdef').innerText = card.atkdef;
+  document.getElementById('modal-effect').innerText = card.effect;
+  document.getElementById('card-modal').style.display='flex';
+}
+function closeModal(){document.getElementById('card-modal').style.display='none';}
+
+/* ---------------- PACK OPENING ---------------- */
+function openPack(packCount){
+  let cost = packCount==1?10:packCount==5?20:packCount==10?50:packCount==20?100:200;
+  if(tokens<cost){alert("Not enough tokens!");return;}
+  tokens-=cost;
+  localStorage.setItem('tokens',tokens);
+  document.getElementById('tokens').innerText = tokens;
+
+  const recentDiv = document.getElementById('recent-pack');
+  recentDiv.innerHTML
