@@ -6,62 +6,33 @@
 <title>RCY Pack Opener & Deck Builder</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
-
-body {
-  margin:0; padding:0;
-  font-family: 'Orbitron', sans-serif;
-  color:#fff;
-  background: url('https://cdn.discordapp.com/attachments/1398179743496536168/1483585527700652032/IMG_4088.jpeg') center/cover no-repeat fixed;
-  display:flex;
-}
-
+body { margin:0; padding:0; font-family: 'Orbitron', sans-serif; color:#fff;
+       background: url('https://cdn.discordapp.com/attachments/1398179743496536168/1483585527700652032/IMG_4088.jpeg') center/cover no-repeat fixed;
+       display:flex; }
 /* Sidebar */
-#sidebar {
-  width: 200px;
-  background: rgba(0,0,0,0.85);
-  border-right:2px solid #ff0000;
-  padding:20px;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  height:100vh;
-  box-shadow:2px 0 20px #ff0000 inset;
-}
-#sidebar h2 {
-  color:#ff0000;
-  text-shadow:0 0 10px #ff0000;
-  font-size:1.6em;
-  margin-bottom:30px;
-}
-.sidebar-btn {
-  width:160px;
-  margin:10px 0;
-  padding:10px;
-  background:#111;
-  border:2px solid #ff0000;
-  border-radius:10px;
-  cursor:pointer;
-  text-align:center;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-.sidebar-btn:hover {
-  transform: scale(1.05);
-  box-shadow:0 0 20px #ff0000,0 0 40px #ff5555 inset;
-}
-
+#sidebar { width:200px; background:rgba(0,0,0,0.85); border-right:2px solid #ff0000;
+           padding:20px; display:flex; flex-direction:column; align-items:center; height:100vh;
+           box-shadow:2px 0 20px #ff0000 inset; }
+#sidebar h2 { color:#ff0000; text-shadow:0 0 10px #ff0000; font-size:1.6em; margin-bottom:30px; }
+.sidebar-btn { width:160px; margin:10px 0; padding:10px; background:#111; border:2px solid #ff0000;
+               border-radius:10px; cursor:pointer; text-align:center; transition: transform 0.2s, box-shadow 0.2s; }
+.sidebar-btn:hover { transform: scale(1.05); box-shadow:0 0 20px #ff0000,0 0 40px #ff5555 inset; }
 /* Main content */
 #main-content {flex:1; padding:20px; overflow-y:auto;}
-.section {display:none;}
-.active {display:block;}
-#tokens-display {text-align:center; margin:10px 0; padding:5px 10px; border:2px solid #ff0000; border-radius:10px; background:rgba(0,0,0,0.7);}
-#box-cover {width:150px;height:200px;margin:20px auto;background:url('https://i.imgur.com/796aviX.jpeg') center/cover no-repeat;border-radius:15px;border:3px solid #ff0000;box-shadow:0 0 40px #ff0000 inset,0 0 80px #ff5555;}
-#rcy-box {width:100px;height:160px;margin:20px auto;background:url('https://i.imgur.com/Zm6b8fF.png') center/cover no-repeat;border-radius:15px;border:3px solid #ff0000;box-shadow:0 0 40px #ff0000 inset,0 0 80px #ff5555;display:flex;justify-content:center;align-items:center;font-size:32px;font-weight:bold;color:#fff;cursor:pointer;position:relative;overflow:hidden;transition:transform 0.6s ease,box-shadow 0.3s ease;}
+.section {display:none;} .active {display:block;}
+#tokens-display {text-align:center; margin:10px 0; padding:5px 10px; border:2px solid #ff0000;
+                 border-radius:10px; background:rgba(0,0,0,0.7);}
+#box-cover {width:150px;height:200px;margin:20px auto;background:url('https://i.imgur.com/796aviX.jpeg') center/cover no-repeat;
+            border-radius:15px;border:3px solid #ff0000;box-shadow:0 0 40px #ff0000 inset,0 0 80px #ff5555;}
+#rcy-box {width:100px;height:160px;margin:20px auto;background:url('https://i.imgur.com/Zm6b8fF.png') center/cover no-repeat;
+          border-radius:15px;border:3px solid #ff0000;box-shadow:0 0 40px #ff0000 inset,0 0 80px #ff5555;
+          display:flex;justify-content:center;align-items:center;font-size:32px;font-weight:bold;color:#fff;
+          cursor:pointer;position:relative;overflow:hidden;transition:transform 0.6s,box-shadow 0.3s;}
 #rcy-box::before {content:"1";position:absolute;top:8px;left:8px;font-size:24px;color:#fff;text-shadow:0 0 5px #ff0000;}
 #rcy-box:hover {transform:rotateY(360deg) scale(1.1) rotateZ(5deg);box-shadow:0 0 60px #ff0000 inset,0 0 120px #ff7777;}
-
-button.open-btn {margin:5px; padding:12px 18px; font-size:16px; cursor:pointer; border:2px solid #ff0000; border-radius:10px; background:#111; color:#fff; transition: transform 0.2s ease, box-shadow 0.2s ease;}
+button.open-btn {margin:5px; padding:12px 18px; font-size:16px; cursor:pointer; border:2px solid #ff0000;
+                 border-radius:10px; background:#111; color:#fff; transition: transform 0.2s, box-shadow 0.2s;}
 button.open-btn:hover {transform: scale(1.05); box-shadow:0 0 20px #ff0000,0 0 40px #ff5555 inset;}
-
 /* Cards */
 #recent-pack, #collection, #deck-builder-pool, #deck-builder-deck {display:flex; flex-wrap:wrap; justify-content:center; max-width:900px; margin-top:20px;}
 .card-slot {width:120px;height:160px;margin:10px; perspective:1000px; cursor:pointer;}
@@ -71,17 +42,14 @@ button.open-btn:hover {transform: scale(1.05); box-shadow:0 0 20px #ff0000,0 0 4
 .card-front {background:#222;}
 .card-back {transform:rotateY(180deg); background-size:cover; background-position:center;}
 .sr {box-shadow:0 0 15px gold inset;}
-.ur {box-shadow:0 0 15px linear-gradient(45deg, red, orange, yellow, green, blue, violet) inset;}
+.ur {box-shadow:0 0 15px #ff0000 inset; animation:shake 0.5s infinite;}
 .uncollected {opacity:0.3;}
 .collected {opacity:1;}
-
 /* Modal */
 #card-modal {display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); justify-content:center; align-items:center; z-index:999;}
 #card-modal-content {background:#111; padding:20px; border:2px solid #ff0000; border-radius:15px; color:#fff; max-width:400px; text-align:center; position:relative;}
 #card-modal-content img {max-width:200px; margin:10px;}
 #card-modal-content .close {position:absolute; top:5px; right:10px; cursor:pointer; font-size:20px;}
-
-/* Shake animation for UR */
 @keyframes shake {0%,100%{transform:translateX(0);}25%{transform:translateX(-5px);}75%{transform:translateX(5px);}}
 </style>
 </head>
@@ -140,35 +108,27 @@ button.open-btn:hover {transform: scale(1.05); box-shadow:0 0 20px #ff0000,0 0 4
   </div>
 </div>
 
-<!-- Sounds -->
 <audio id="packSound" src="https://freesound.org/data/previews/256/256113_3263906-lq.mp3"></audio>
 <audio id="flipSound" src="https://freesound.org/data/previews/341/341695_3248240-lq.mp3"></audio>
 <audio id="rareSound" src="https://freesound.org/data/previews/141/141644_1871006-lq.mp3"></audio>
 
 <script>
-/* ---------------- NAVIGATION ---------------- */
+// NAVIGATION
 function showSection(id){
   document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
 }
 
-/* ---------------- TOKEN SYSTEM ---------------- */
-let tokens = parseInt(localStorage.getItem('tokens')) || 0;
+// TOKEN SYSTEM
+let tokens = parseInt(localStorage.getItem('tokens'))||0;
 let lastLogin = localStorage.getItem('lastLogin');
 let today = new Date().toDateString();
-if(!localStorage.getItem('firstTime')){
-  tokens+=1000;
-  localStorage.setItem('firstTime','done');
-  alert("🎉 First login bonus! You got 1000 tokens!");
-}
-if(lastLogin!==today){
-  tokens+=10;
-  localStorage.setItem('lastLogin',today);
-}
+if(!localStorage.getItem('firstTime')){tokens+=1000; localStorage.setItem('firstTime','done'); alert("🎉 First login bonus! 1000 tokens!");}
+if(lastLogin!==today){tokens+=10; localStorage.setItem('lastLogin',today);}
 document.getElementById('tokens').innerText = tokens;
 localStorage.setItem('tokens',tokens);
 
-/* ---------------- CARD POOL ---------------- */
+// CARD POOL
 const cardPool=[
 {name:"Byteblade Initiate", type:"Level 3 DARK Cyberse", atkdef:"ATK 1200 / DEF 800", effect:"If you control no monsters: Special Summon from hand. If sent to GY: add 1 'Byteblade' card from Deck. Once per turn.", imageUrl:"https://i.imgur.com/A6bjtgJ.png", rarity:"N"},
 {name:"Byteblade Slicer", type:"Level 4 DARK Cyberse", atkdef:"ATK 1500 / DEF 1000", effect:"Special Summon if only Byteblade monsters control field. Normal/Special Summon: Special Summon 1 Byteblade from hand or GY. Once per turn.", imageUrl:"https://i.imgur.com/hvbqeZw.png", rarity:"N"},
@@ -184,30 +144,76 @@ const cardPool=[
 {name:"Windy Breeze Mia", type:"Link 1 WIND Warrior", atkdef:"ATK 700", effect:"Link Summon: Discard 1 card; gain 1 additional Normal Summon for WIND monster. Used as Link material: add 1 WIND monster from Deck. Once per turn.", imageUrl:"https://i.imgur.com/efgGdFr.jpeg", rarity:"R"},
 {name:"Shimmering Summer Breeze", type:"Level 3 LIGHT Winged Beast Tuner", atkdef:"ATK 0 / DEF 1300", effect:"Quick Effect: When a card/effect activates with certain effects, discard this card; negate effect. Once per turn.", imageUrl:"https://i.imgur.com/Rki26bX.jpeg", rarity:"SR"},
 {name:"D-Lord", type:"Level 8 DARK Fiend", atkdef:"ATK 2300 / DEF 2000", effect:"Special Summon by sending 1 card from hand/field. Normal/Special Summon: banish 1 monster from GY; add 1 monster from Deck same attribute. Opponent turn GY: send 1 card field to GY; Special Summon this card. Once per turn.", imageUrl:"https://i.imgur.com/xm80gU6.jpeg", rarity:"UR"}
-];
-
-/* ---------------- COLLECTION ---------------- */
+]
+  <script>
+// ---------------- COLLECTION DISPLAY ----------------
 function updateCollectionDisplay(){
   const collectionDiv = document.getElementById('collection');
-  let collection = JSON.parse(localStorage.getItem('collection')) || [];
+  let collection = JSON.parse(localStorage.getItem('collection'))||[];
   collectionDiv.innerHTML="";
   cardPool.forEach(card=>{
     const slot = document.createElement('div');
     slot.className='card-slot';
     const inner = document.createElement('div');
     inner.className='card-inner flipped';
-    inner.innerHTML=`<div class="card-face card-front"></div>
-    <div class="card-face card-back ${card.rarity=='SR'?'sr':card.rarity=='UR'?'ur':''}"><img src="${card.imageUrl}" alt="${card.name}"></div>`;
-    if(collection.includes(card.name)){
-      inner.classList.remove('flipped');
-    } else {inner.classList.add('flipped');}
+    inner.innerHTML=`
+      <div class="card-face card-front"></div>
+      <div class="card-face card-back ${card.rarity=='SR'?'sr':card.rarity=='UR'?'ur':''}">
+        <img src="${card.imageUrl}" alt="${card.name}">
+      </div>`;
+    if(collection.includes(card.name)){ inner.classList.remove('flipped'); }
     inner.onclick=()=>showModal(card);
     slot.appendChild(inner);
     collectionDiv.appendChild(slot);
   });
 }
+updateCollectionDisplay();
 
-/* ---------------- MODAL ---------------- */
+// ---------------- DECK BUILDER ----------------
+function updateDeckBuilder(){
+  const poolDiv = document.getElementById('deck-builder-pool');
+  const deckDiv = document.getElementById('deck-builder-deck');
+  let collection = JSON.parse(localStorage.getItem('collection'))||[];
+  let deck = JSON.parse(localStorage.getItem('deck'))||[];
+  poolDiv.innerHTML=""; deckDiv.innerHTML="";
+
+  cardPool.forEach(card=>{
+    const slot = document.createElement('div'); slot.className='card-slot';
+    const inner = document.createElement('div'); inner.className='card-inner flipped';
+    inner.innerHTML=`
+      <div class="card-face card-front"></div>
+      <div class="card-face card-back ${card.rarity=='SR'?'sr':card.rarity=='UR'?'ur':''}">
+        <img src="${card.imageUrl}" alt="${card.name}">
+      </div>`;
+    if(collection.includes(card.name)){ inner.classList.remove('flipped'); inner.classList.add('collected'); }
+    else { inner.classList.add('uncollected'); }
+    inner.onclick=()=>{
+      if(!collection.includes(card.name)){ alert("You haven't collected this card!"); return; }
+      if(deck.includes(card.name)){ alert("Card already in deck"); return; }
+      if(deck.length>=40){ alert("Deck is full (40 cards max)"); return; }
+      deck.push(card.name); localStorage.setItem('deck',JSON.stringify(deck));
+      updateDeckBuilder();
+    };
+    slot.appendChild(inner); poolDiv.appendChild(slot);
+  });
+
+  // Deck display
+  deck.forEach(cardName=>{
+    const card = cardPool.find(c=>c.name===cardName);
+    const slot = document.createElement('div'); slot.className='card-slot';
+    const inner = document.createElement('div'); inner.className='card-inner';
+    inner.innerHTML=`
+      <div class="card-face card-front"></div>
+      <div class="card-face card-back ${card.rarity=='SR'?'sr':card.rarity=='UR'?'ur':''}">
+        <img src="${card.imageUrl}" alt="${card.name}">
+      </div>`;
+    inner.onclick=()=>{ deck = deck.filter(c=>c!==cardName); localStorage.setItem('deck',JSON.stringify(deck)); updateDeckBuilder(); };
+    slot.appendChild(inner); deckDiv.appendChild(slot);
+  });
+}
+updateDeckBuilder();
+
+// ---------------- MODAL ----------------
 function showModal(card){
   document.getElementById('modal-img').src = card.imageUrl;
   document.getElementById('modal-name').innerText = card.name;
@@ -216,15 +222,49 @@ function showModal(card){
   document.getElementById('modal-effect').innerText = card.effect;
   document.getElementById('card-modal').style.display='flex';
 }
-function closeModal(){document.getElementById('card-modal').style.display='none';}
+function closeModal(){ document.getElementById('card-modal').style.display='none'; }
 
-/* ---------------- PACK OPENING ---------------- */
+// ---------------- PACK OPENING ----------------
 function openPack(packCount){
   let cost = packCount==1?10:packCount==5?20:packCount==10?50:packCount==20?100:200;
-  if(tokens<cost){alert("Not enough tokens!");return;}
-  tokens-=cost;
-  localStorage.setItem('tokens',tokens);
-  document.getElementById('tokens').innerText = tokens;
+  if(tokens<cost){ alert("Not enough tokens!"); return; }
+  tokens-=cost; localStorage.setItem('tokens',tokens);
+  document.getElementById('tokens').innerText=tokens;
+  const recentDiv=document.getElementById('recent-pack'); recentDiv.innerHTML="";
+  document.getElementById('packSound').play();
 
-  const recentDiv = document.getElementById('recent-pack');
-  recentDiv.innerHTML
+  let collection = JSON.parse(localStorage.getItem('collection'))||[];
+  let firstOpen=true;
+  for(let i=0;i<packCount;i++){
+    // select 5 cards per pack
+    for(let j=0;j<5;j++){
+      let rarityRoll=Math.random();
+      let cardCandidates=cardPool.filter(c=>c.rarity=="N");
+      if(rarityRoll<0.1){ cardCandidates=cardPool.filter(c=>c.rarity=="R"); }
+      else if(rarityRoll<0.03){ cardCandidates=cardPool.filter(c=>c.rarity=="SR"); }
+      else if(rarityRoll<0.01){ cardCandidates=cardPool.filter(c=>c.rarity=="UR"); }
+      const card=cardCandidates[Math.floor(Math.random()*cardCandidates.length)];
+
+      // Create card element
+      const slot=document.createElement('div'); slot.className='card-slot';
+      const inner=document.createElement('div'); inner.className='card-inner flipped';
+      inner.innerHTML=`
+        <div class="card-face card-front"></div>
+        <div class="card-face card-back ${card.rarity=='SR'?'sr':card.rarity=='UR'?'ur':''}">
+          <img src="${card.imageUrl}" alt="${card.name}">
+        </div>`;
+      slot.appendChild(inner); recentDiv.appendChild(slot);
+
+      // Flip animation with delay
+      setTimeout(()=>{
+        inner.classList.remove('flipped'); document.getElementById('flipSound').play();
+        if(card.rarity=='UR'){ document.getElementById('rareSound').play(); inner.style.animation='shake 0.5s infinite'; }
+        if(!collection.includes(card.name)){ collection.push(card.name); }
+        if(firstOpen){ alert("🎉 You got your first card!"); firstOpen=false; }
+        localStorage.setItem('collection',JSON.stringify(collection));
+        updateCollectionDisplay(); updateDeckBuilder();
+      },i*1000+j*400);
+    }
+  }
+}
+</script>
